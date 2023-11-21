@@ -1,0 +1,74 @@
+{% extends 'main/base.html' %}
+
+{% load static %}
+
+
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+  <h2>Настройки рекламы для книги "{{ book.title }}"</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="start_date">Дата начала рекламы:</label>
+      <input type="date" id="start_date" name="start_date" required>
+    </div>
+    <div class="form-group">
+      <label for="end_date">Дата окончания рекламы:</label>
+      <input type="date" id="end_date" name="end_date" required>
+    </div>
+    <div class="form-group">
+      <label for="page_location">Местоположение рекламы:</label>
+      <select id="page_location" name="page_location" required>
+        <option value="main">Главная</option>
+        <option value="fandom">Поиск по фендомам</option>
+        <option value="genre">Поиск по жанрам</option>
+        <option value="tag">Поиск по тегам</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="fandom">Фендом:</label>
+      <input type="text" id="fandom" name="fandom" class="autocomplete">
+        <div id="fandom-suggestions"></div>
+
+<!-- JavaScript для AJAX-запроса фендомов -->
+<script>
+    $(document).ready(function() {
+        $('#fandom-input').on('input', function() {
+            $.ajax({
+                url: '{% url "Advertisement:autocomplete_fandom" %}',
+                data: {
+                    query: $(this).val()
+                },
+                success: function(data) {
+                    $('#fandom-suggestions').empty();
+                    data.forEach(function(item) {
+                        $('#fandom-suggestions').append('<div>' + item + '</div>');
+                    });
+                }
+            });
+        });
+    });
+</script>
+    </div>
+    </div>
+    <div class="form-group">
+      <label for="genre">Жанр:</label>
+      <input type="text" id="genre" name="genre" class="autocomplete">
+    </div>
+    <div class="form-group">
+      <label for="tag">Тег:</label>
+      <input type="text" id="tag" name="tag" class="autocomplete">
+    </div>
+    <div class="form-group">
+      <label for="cost">Стоимость рекламы:</label>
+      <input type="number" id="cost" name="cost" required>
+    </div>
+    <input type="submit" value="Сохранить">
+  </form>
+
+  <!-- AJAX и дополнительные элементы можно добавить здесь -->
+{% endblock %}

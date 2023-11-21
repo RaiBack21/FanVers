@@ -1,0 +1,11 @@
+{% extends 'main/base.html'%}
+
+{% block content %}
+  {% for dialog in dialogs %}
+    {% if dialog.user1 == request.user %}
+      <a href="{% url 'users:dialog_view' dialog.id %}">{{ dialog.user2.username }}</a>
+    {% else %}
+      <a href="{% url 'users:dialog_view' dialog.id %}">{{ dialog.user1.username }}</a>
+    {% endif %}
+  {% endfor %}
+{% endblock %}

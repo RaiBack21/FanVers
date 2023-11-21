@@ -1,0 +1,357 @@
+{% extends 'main/base.html'%}
+{% load static %}
+
+{% block content %}
+    <div class="page_wrapper main_page">
+
+      <div class="main_content_wrapper">
+        <div class="page_navigation">
+          <a href="{% url 'main:home' %}"><p>Головна</p></a>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 18 18"
+            fill="none"
+          >
+            <path d="M6.75 4.5L11.25 9L6.75 13.5" stroke="white" />
+          </svg>
+          <a href="{% url 'catalog:left-translations' %}"><p>Покинуті переклади</p></a>
+        </div>
+        <div class="main_page_title">
+          <h2>Покинуті переклади</h2>
+          <p class="left_tr_text">
+            Забрати покинутий переклад можуть користувачі, які зарегистрировані
+            <br />
+            на сайті більше 90 днів
+          </p>
+        </div>
+
+        <div class="catalogue_content">
+          <div class="catalogue_left">
+            <form action="" method="get">
+            <div class="cat_search">
+              <input type="text" placeholder="Пошук по покинутих перекладах" name="q" />
+              <button class="cat_search_btn" type="submit">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <circle cx="11" cy="11" r="6" stroke="white" />
+                <path d="M20 20L17 17" stroke="white" stroke-linecap="round" />
+              </svg>
+              </button>
+            </div>
+            </form>
+            <div class="cat_sort translator_top_actions main_bb">
+              <p>Показано {{books.count}} робіт</p>
+              {% include 'include/sort.html' %}
+              {% include 'include/filter_mob.html' %}
+            </div>
+            <div class="cat_cards">
+              <button type="button" class="stick_btn" onclick="mobFilter()">
+                <p>ЗМІНИТИ ФІЛЬТРИ ПОШУК</p>
+              </button>
+              {% for book in books %}
+              <input type="hidden" class="booksid" value="{{book.id}}">
+              <div class="cat_card">
+                <a href="{% url 'catalog:Book_Base' slug=book.slug %}">
+                  <img src="{{ book.image.url }}" alt="" />
+                </a>
+                <p class="catalog_title">{{ book.title }}</p>
+                <div class="cat_card_desc">
+                  <div>
+                    <p>Статус:</p>
+                    <p>{{ book.status }}</p>
+                  </div>
+                  <div>
+                    <p>Фендом:</p>
+                    <div class="fan">
+                      {% for fandom in book.fandoms.all|slice:':2' %}
+                      <label for="fandomss" class="tag_lbl">
+                      <input
+                        class="tag_btn"
+                        id="fandomss" hidden>
+                        <p class="p_fan">{{ fandom.name }}</p>
+                        </label>
+                      {% endfor %}
+
+                      {% if book.fandoms.all.count > 2 %}
+                      <select class="dialog" style="width: 20px;">
+
+                        {% for fandom in book.fandoms.all|slice:'2:' %}
+                          <option disabled="disabled"><p>{{ fandom.name }}</p></option>
+                        {% endfor %}
+
+                      </select>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div>
+                    <p>Теги:</p>
+                    <div class="fan">
+                      {% for tag in book.tags.all|slice:':2' %}
+                      <label for="tagss" class="tag_lbl">
+                        <input
+                        class="tag_btn"
+                        id="tagss" hidden>
+                        <p class="p_fan">{{ tag.name }}</p>
+                      </label>
+                      {% endfor %}
+
+                    {% if book.tags.all.count > 2 %}
+                    <select class="dialog_tag" style="width: 20px;">
+
+                      {% for tag in book.tags.all|slice:'2:' %}
+                        <option disabled="disabled"><p>{{ tag.name }}</p></option>
+                      {% endfor %}
+
+                    </select>
+                    {% endif %}
+                    </div>
+                  </div>
+                  <div>
+                    <p>Жанри:</p>
+                    <div class="fan">
+                    {% for genre in book.genres.all|slice:':2' %}
+                    <label for="genress" class="tag_lbl">
+                      <input
+                      class="tag_btn"
+                      id="genress" hidden>
+                      <p class="p_fan">{{ genre.name }}</p>
+                    </label>
+                    {% endfor %}
+
+                    {% if book.genres.all.count > 2 %}
+                    <select class="dialog_gen" style="width: 20px;">
+
+                      {% for genre in book.genres.all|slice:'2:' %}
+                        <option disabled="disabled"><p>{{ genre.name }}</p></option>
+                      {% endfor %}
+
+                    </select>
+                    {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+            {% include 'include/show_more.html' %}
+          </div>
+          {% include 'include/filter.html' %}
+        </div>
+      </div>
+
+<script>
+$('.dialog').each(function () {
+
+          // Cache the number of options
+          var $this = $(this),
+              numberOfOptions = $(this).children('option').length;
+
+          // Hides the select element
+          $this.addClass('s-hidden');
+
+          // Wrap the select element in a div
+          $this.wrap('<div class="select"></div>');
+
+          // Insert a styled div to sit over the top of the hidden select element
+          $this.after('<div class="styledSelect"></div>');
+
+          // Cache the styled div
+          var $styledSelect = $this.next('div.styledSelect');
+
+          // Insert an unordered list after the styled div and also cache the list
+          var $list = $('<ul />', {
+              'class': 'options',
+              'id': 'optionss'
+          }).insertAfter($styledSelect);
+
+          // Insert a list item into the unordered list for each select option
+          for (var i = 0; i < numberOfOptions; i++) {
+              $('<li />', {
+                  text: $this.children('option').eq(i).text(),
+                  rel: $this.children('option').eq(i).val()
+              }).appendTo($list);
+          }
+
+          // Cache the list items
+          var $listItems = $list.children('li');
+
+          // Show the unordered list when the styled div is clicked (also hides it if the div is clicked again)
+          $styledSelect.click(function (e) {
+              e.stopPropagation();
+              var aFan = document.getElementById('optionss');
+              var actualDisplayFan = getComputedStyle(aFan).display;
+              $(this).toggleClass('active').next('ul.options').toggle();
+              if (actualDisplayFan == 'none') {
+                aFan.style.display = "flex";
+              } else {
+                aFan.style.display = "none";
+              }
+          });
+
+          // Hides the unordered list when clicking outside of it
+          $(document).click(function () {
+              $styledSelect.removeClass('active');
+              $list.hide();
+          });
+
+      });
+
+$('.dialog_tag').each(function () {
+
+        // Cache the number of options
+        var $this = $(this),
+            numberOfOptionsTag = $(this).children('option').length;
+
+        // Hides the select element
+        $this.addClass('s-hidden_tag');
+
+        // Wrap the select element in a div
+        $this.wrap('<div class="select_tag"></div>');
+
+        // Insert a styled div to sit over the top of the hidden select element
+        $this.after('<div class="styledSelect_tag"></div>');
+
+        // Cache the styled div
+        var $styledSelectTag = $this.next('div.styledSelect_tag');
+
+        // Insert an unordered list after the styled div and also cache the list
+        var $listTag = $('<ul />', {
+            'class': 'options_tag',
+            'id': 'optionss_tag'
+        }).insertAfter($styledSelectTag);
+
+        // Insert a list item into the unordered list for each select option
+        for (var i = 0; i < numberOfOptionsTag; i++) {
+            $('<li />', {
+                text: $this.children('option').eq(i).text(),
+                rel: $this.children('option').eq(i).val()
+            }).appendTo($listTag);
+        }
+
+        // Cache the list items
+        var $listItemsTag = $listTag.children('li');
+
+        // Show the unordered list when the styled div is clicked (also hides it if the div is clicked again)
+        $styledSelectTag.click(function (e) {
+            e.stopPropagation();
+            var aTag = document.getElementById('optionss_tag');
+            var actualDisplayTag = getComputedStyle(aTag).display;
+            $(this).toggleClass('active').next('ul.options_tag').toggle();
+            if (actualDisplayTag == 'none') {
+              aTag.style.display = "flex";
+            } else {
+              aTag.style.display = "none";
+            }
+        });
+
+        // Hides the unordered list when clicking outside of it
+        $(document).click(function () {
+            $styledSelectTag.removeClass('active');
+            $listTag.hide();
+        });
+
+      });
+
+$('.dialog_gen').each(function () {
+
+        // Cache the number of options
+        var $this = $(this),
+            numberOfOptionsGen = $(this).children('option').length;
+
+        // Hides the select element
+        $this.addClass('s-hidden_gen');
+
+        // Wrap the select element in a div
+        $this.wrap('<div class="select_gen"></div>');
+
+        // Insert a styled div to sit over the top of the hidden select element
+        $this.after('<div class="styledSelect_gen"></div>');
+
+        // Cache the styled div
+        var $styledSelectGen = $this.next('div.styledSelect_gen');
+
+        // Insert an unordered list after the styled div and also cache the list
+        var $listGen = $('<ul />', {
+            'class': 'options_gen',
+            'id': 'optionss_gen'
+        }).insertAfter($styledSelectGen);
+
+        // Insert a list item into the unordered list for each select option
+        for (var i = 0; i < numberOfOptionsGen; i++) {
+            $('<li />', {
+                text: $this.children('option').eq(i).text(),
+                rel: $this.children('option').eq(i).val()
+            }).appendTo($listGen);
+        }
+
+        // Cache the list items
+        var $listItemGens = $listGen.children('li');
+
+        // Show the unordered list when the styled div is clicked (also hides it if the div is clicked again)
+        $styledSelectGen.click(function (e) {
+            e.stopPropagation();
+            var aGen = document.getElementById('optionss_gen');
+            var actualDisplay = getComputedStyle(aGen).display;
+            $(this).toggleClass('active').next('ul.options_gen').toggle();
+              if (actualDisplay == 'none') {
+                aGen.style.display = "flex";
+              } else {
+                aGen.style.display = "none";
+              }
+        });
+
+
+        // Hides the unordered list when clicking outside of it
+        $(document).click(function () {
+            $styledSelectGen.removeClass('active');
+            $listGen.hide();
+        });
+
+      });
+
+var BottomPosition = 0;
+var BottomFlag = false;
+var AnimateFlag = false;
+
+	$(document).ready(function() {
+		$('.stick_btn').click(function() {
+			AnimateFlag = true;
+			if(BottomFlag) {
+				$("body,html").animate({"scrollTop":BottomPosition}, 200, function() {
+					AnimateFlag = false;
+				});
+			BottomFlag = false;
+			}
+			else {
+				$("body,html").animate({"scrollTop":0}, 200, function() {
+					AnimateFlag = false;
+				});
+				BottomPosition = $(window).scrollTop();
+				BottomFlag = true;
+			}
+		});
+
+		$(window).scroll(function(event) {
+			var countScroll = $(window).scrollTop();
+			if (countScroll > 200 && !AnimateFlag) {
+				$('.stick_btn').show();
+				if(BottomFlag) {
+					BottomFlag = false;
+				}
+			}
+			else {
+				if(!BottomFlag) {
+					$('.stick_btn').hide();
+				}
+			}
+		});
+	});
+</script>
+{% endblock %}

@@ -1,0 +1,36 @@
+  <div class="translator_filter">
+    <span>Сортувати за</span>
+
+  <form action="" method="get" id="sortform">
+      <input type="hidden" id="orderval" value="{{order}}">
+      {% for book in books %}
+      <input type="hidden" name="bookid" id="bookid" value="{{book.id}}">
+      {% endfor %}
+
+    <select name="order" id="order" onchange="sendSort()">
+      <option id="title" value="title">назвою</option>
+      <option id="pub_date" value="pub_date">датою створення</option>
+      <option id="last_updated" value="last_updated">датою оновлення</option>
+      <option id="ratings" value="ratings">рейтингом твору</option>
+      <option id="views" value="views">переглядами</option>
+      <option id="quality" value="quality">якістю перекладу</option>
+      <option id="free_pages" value="free_pages">кількістю безкоштовних сторінок</option>
+      <option id="pages" value="pages">кількістю сторінок</option>
+      <option id="chapters" value="chapters">кількістю розділів</option>
+      <option id="bookmarks_sort" value="bookmarks_sort">кількістю в закладках</option>
+    </select>
+
+  </form>
+  </div>
+<script>
+  function sendSort() {
+    var form = document.getElementById('sortform');
+    form.submit();
+  };
+
+  $(document).ready(function () {
+    var sel = document.getElementById('orderval');
+    var opt = document.getElementById(sel.value)
+    $('#'+sel.value).attr("selected", "selected");
+  });
+</script>

@@ -1,0 +1,49 @@
+{% load static %}
+<footer>
+  <div class="footer_wrapper">
+    <a href="/">
+      <div class="footer_logo">
+        <img src="{% static 'main/images/assets/main-logo.png' %}"  alt="FanVers" width="150" height="150"/>
+      </div>
+    </a>
+    <div class="footer_menu">
+      <a href="{% url 'main:For_copyright_holders' %}">
+        <p>Для правовласників</p>
+      </a>
+      <a href="{% url 'main:user_agreement' %}">
+        <p>Угода користувача</p></a>
+      <a href="{% url 'main:Reference' %}">
+        <p>Довідка</p>
+      </a>
+      <a href="{% url 'main:money_problem' %}">
+        <p>Не поповнився баланс?</p>
+      </a>
+    </div>
+    <div class="footer_menu">
+      <a href="{% url 'main:thanks' %}">
+        <p>Сказати «дякую!»</p>
+      </a>
+      <a href="{% url 'main:Suggest_improvements' %}">
+        <p>Запропонувати покращення</p>
+      </a>
+      <a href="{% url 'main:Contacts' %}">
+        <p>Контакти</p>
+      </a>
+      <a href="{% url 'main:Write_to_support' %}">
+        <p>Написати у підтримку</p>
+      </a>
+    </div>
+    <div class="footer_socials">
+      <a href="#">
+        <img src="{% static 'main/images/assets/icons/facebook.svg' %}" alt="" />
+      </a>
+      <a href="#">
+        <img src="{% static 'main/images/assets/icons/instagram.svg' %}" alt="" />
+      </a>
+    </div>
+  </div>
+  <div class="footer_bottom">
+    <p>FanVers © 2023</p>
+    <p>All rights reserved</p>
+  </div>
+</footer>

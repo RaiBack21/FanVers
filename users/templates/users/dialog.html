@@ -1,0 +1,20 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+<h1>Диалог с {{ other_user }}</h1>
+
+<div id="messages">
+  {% for message in messages %}
+    <b>{{ message.sender }}:</b>
+    {{ message.text }}<br>
+  {% endfor %}
+</div>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit" value="Отправить">
+</form>
+
+{% endblock %}

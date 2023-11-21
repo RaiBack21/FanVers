@@ -1,0 +1,49 @@
+{% extends 'main/base.html' %}
+
+{% load static %}
+
+
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<form action="" method="post">
+  {% csrf_token %}
+  <ul>
+    <li>Дата початку: {{ start_date|date }}</li>
+    <li>Дата закінчення: {{ end_date|date }}</li>
+    <li>
+      {% if genre %}
+          Жанр: {{ genre.name }}
+      {% endif %}
+    </li>
+    <li>
+      {% if tag %}
+          Тег: {{ tag}}
+      {% endif %}
+    </li>
+    <li>
+      {% if fandom %}
+          Фендом: {{ fandom }}
+      {% endif %}
+    </li>
+
+    <li>Вартість: {{ cost }}</li>
+  </ul>
+  <button type="submit">Підтвердити</button>
+</form>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">
+                {{ message|safe }}
+                <a href="#" class="close">✖</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+
+
+{% endblock %}

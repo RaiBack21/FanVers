@@ -1,0 +1,12 @@
+local_settings.py
+prod_settings.py
+
+db.sqlite.3
+
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
+
+__pycache__/
+*/__pycache__/
+*.py[cod]

@@ -1,0 +1,1265 @@
+{% extends 'main/base.html'%}
+{% load static %}
+
+{% block content %}
+    <div class="page_wrapper about_page">
+      <div class="about_page_wrapper">
+        <!-- About -->
+        <div class="about_book_block">
+          <div class="about_book_nav">
+            <a href="{% url 'main:home' %}"><p>Головна</p></a>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 18 18"
+              fill="none"
+            >
+              <path d="M6.75 4.5L11.25 9L6.75 13.5" stroke="white" />
+            </svg>
+            <a href="{% url 'catalog:Book_Base' slug=book.slug %}"><p>{{ book.title }}</p></a>
+          </div>
+          <div class="about_book_title">
+            <h2>{{ book.title }}</h2>
+          </div>
+          <div class="about_book_content">
+            <div class="about_book_img">
+              <img src="{{ book.image.url }}" alt="" />
+              {% if book.adult_content %}
+                <img class="adult" src="{% static 'catalog/image/18+.png' %}">
+              {% endif %}
+            </div>
+            <div class="about_book_desc">
+              <div class="about_book_desc_item">
+                <div>
+                  <p>Автор</p>
+                </div>
+                <div>
+                  <p>{{ book.author }}</p>
+                </div>
+              </div>
+              <div class="about_book_desc_item">
+                <div>
+                  <p>Перекладач</p>
+                </div>
+                <div>
+                  <p>{{ book.user }}</p>
+                </div>
+              </div>
+              <div class="about_book_desc_item">
+                <div>
+                  <p>Розділів</p>
+                </div>
+                <div>
+                  <p>{{ book.chapters_amount }}</p>
+                </div>
+              </div>
+              <div class="about_book_desc_item">
+                <div>
+                  <p>Жанр</p>
+                </div>
+                <div>
+                  {% for genre in book.genres.all %}
+                   <button class="tag_btn">{{ genre }}</button>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="about_book_desc_item">
+                <div>
+                  <p>Теги</p>
+                </div>
+                <div>
+                  {% for tag in book.tags.all %}
+                  <button class="tag_btn">{{ tag }}</button>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="about_book_desc_item">
+                <div>
+                  <p>Фендом</p>
+                </div>
+                <div>
+                  {% for fandom in book.fandoms.all %}
+                  <button class="tag_btn">{{ fandom }}</button>
+                  {% endfor%}
+                </div>
+              </div>
+              <div class="about_book_desc_item">
+                <div>
+                  <p>Країна</p>
+                </div>
+                <div>
+                  <p>{{ book.country }}</p>
+                </div>
+              </div>
+              <div class="about_book_desc_item">
+                <div>
+                  <p>Статус перекладу</p>
+                </div>
+                <div>
+                  <p>{{ book.status }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="about_book_rates">
+              <p class="p_thank">ПОДЯКУВАТИ ЗА РОБОТУ:</p>
+              <button class="about_book_cost">
+                <span>10</span>
+                <p>FanCoins</p>
+              </button>
+              <script>
+                $(document).ready(function() {
+                  var bookId = {{ book.id }}
+                  $.ajax({
+                    url: `{% url "catalog:get_user_rating" %}`,
+                    method: 'GET',
+                    data: {
+                        'book_id': bookId,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                      },
+                      success: function(data) {
+                        var userRating = data.user_rating;
+
+                        setStars(userRating);
+                      },
+                      error: function() {
+                        console.error('Ошибка при запросе рейтинга пользователя');
+                      }
+                    });
+
+                    // Функция для установки звездочек
+                  function setStars(userRating) {
+                    $('.star').each(function(index, star) {
+                      if (index < userRating) {
+                        $(star).addClass('active');
+                      } else {
+                        $(star).removeClass('active');
+                      }
+                    });
+                  }
+                  });
+
+                $(document).ready(function() {
+                  $('.star').on('click', function() {
+                    var stars = $(this).data('value');
+                    var bookId =  {{ book.id }};
+                    console.log(bookId);
+                    $('.star').each(function(index, star) {
+                      if (index < stars) {
+                        $(star).addClass('active');
+                      } else {
+                        $(star).removeClass('active');
+                      }
+                    });
+
+
+                    $.ajax({
+                      url: '{% url "catalog:rate_book" %}',
+                      method: 'POST',
+                      data: {
+                        'book_id': bookId,
+                        'stars': stars,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                      },
+                      success: function(response) {
+                        let avg_rating = response.avg_rating;
+                        $('.star').each(function(index, star) {
+                          if (index < avg_rating) {
+                            $(star).css('border-color', 'red');
+                          } else {
+                            $(star).css('border-color', 'initial');
+                          }
+                        });
+                      },
+                      error: function(response) {
+                        // обработайте ошибку
+                      }
+                    });
+                  });
+
+                  $('.star').on('mouseover', function() {
+                    var hoverStars = $(this).data('value');
+                    $('.star').each(function(index, star) {
+                      if (index < hoverStars) {
+                        $(star).addClass('hover');
+                      } else {
+                        $(star).removeClass('hover');
+                      }
+                    });
+                  });
+
+                  $('.star').on('mouseout', function() {
+                    $('.star').removeClass('hover');
+                  });
+                });
+
+                $(document).ready(function() {
+                  var bookId = {{ book.id }}
+                  $.ajax({
+                    url: `{% url "catalog:get_user_quality" %}`,
+                    method: 'GET',
+                    data: {
+                        'book_id': bookId,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                      },
+                      success: function(data) {
+                        var userQuality= data.user_quality;
+
+                        setStarsb(userQuality);
+                      },
+                      error: function() {
+                        console.error('Ошибка при запросе рейтинга пользователя');
+                      }
+                    });
+
+                    // Функция для установки звездочек
+                  function setStarsb(userQuality) {
+                    $('.starb').each(function(index, starb) {
+                      if (index < userQuality) {
+                        $(starb).addClass('active');
+                      } else {
+                        $(starb).removeClass('active');
+                      }
+                    });
+                  }
+                  });
+
+                $(document).ready(function() {
+                  $('.starb').on('click', function() {
+                    var starsb = $(this).data('value');
+                    var bookId =  {{ book.id }};
+                    console.log(bookId);
+                    $('.starb').each(function(index, starb) {
+                      if (index < starsb) {
+                        $(starb).addClass('active');
+                      } else {
+                        $(starb).removeClass('active');
+                      }
+                    });
+
+
+                    $.ajax({
+                      url: '{% url "catalog:quality_translation" %}',
+                      method: 'POST',
+                      data: {
+                        'book_id': bookId,
+                        'starsb': starsb,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                      },
+                      success: function(response) {
+                        let avg_quality = response.avg_quality;
+                        $('.starb').each(function(index, starb) {
+                          if (index < avg_quality) {
+                            $(starb).css('border-color', 'red');
+                          } else {
+                            $(starb).css('border-color', 'initial');
+                          }
+                        });
+                      },
+                      error: function(response) {
+                        // обработайте ошибку
+                      }
+                    });
+                  });
+
+                  $('.starb').on('mouseover', function() {
+                    var hoverStarsb = $(this).data('value');
+                    $('.starb').each(function(index, starb) {
+                      if (index < hoverStarsb) {
+                        $(starb).addClass('hover');
+                      } else {
+                        $(starb).removeClass('hover');
+                      }
+                    });
+                  });
+
+                  $('.starb').on('mouseout', function() {
+                    $('.starb').removeClass('hover');
+                  });
+                });
+
+              </script>
+              <div class="adverts_carousel_item_rate about_book_rates_block">
+                <p>Рейтинг твору</p>
+                <div class="rating">
+                  <span>
+                    {% for i in "12345" %}
+                      <p class="star {% if i <= avg_rating %}active{% endif %}" data-value="{{ i }}"></p>
+                    {% endfor %}
+                  </span>
+                </div>
+                  <p>Якість перЕкладу</p>
+                  <div class="quality">
+                    <span>
+                      {% for i in "12345" %}
+                        <p class="starb {% if i <= avg_quality %}active{% endif %}" data-value="{{ i }}"></p>
+                      {% endfor %}
+                    </span>
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div class="about_book_actions">
+            <div class="about_book_action_div">
+              <button class="about_book_action">
+                <img src="{% static 'catalog/images/assets/icons/read.svg' %}" alt="" />
+                <p>Читати</p>
+              </button>
+              <button class="about_book_action" id="bookmark_btn" onclick="openModalWindow()" >
+                <img src="{% static 'catalog/images/assets/icons/bookmark.svg' %}" alt="" />
+                <p>До закладок</p>
+              </button>
+            </div>
+            <div>
+              <button class="about_book_action">
+                <p>Стати новим перекладачем</p>
+              </button>
+            </div>
+          </div>
+          <div class="asdf">
+              <div id="bookmark_modal" class="bookmark_modal" style="display: none;">
+                <button class="close_bookmark" id="close_bookmark" onclick="closeModalWindow()" >&times;</button>
+                <form action="{% url 'catalog:bookmark_action' slug=book.slug %}" method="post">
+                  {% csrf_token %}
+                  <select name="group">
+                    <option input value="READ">Читаю</option>
+                    <option input value="IN_PLANS">В планах</option>
+                    <option input value="END_READ">Прочитав</option>
+                    <option input value="SPECIAL">Обране</option>
+                    <option input value="LEFT">Кинув</option>
+                  </select>
+                  <button class="about_book_action" id="add_btn" >
+                    <p>Додати</p>
+                  </button>
+                </form>
+              </div>
+          </div>
+          <div class="book_description">
+            <div class="book_description_title">
+              <h2>Опис книги</h2>
+            </div>
+            <p>
+              {{ book.description }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- Other books -->
+      <div class="trends_block other_books">
+        <div class="news_block">
+          <div class="news_block_title">
+            <p>Інші роботи перекладача</p>
+          </div>
+          <div class="custom_car_arrows news_arrows">
+            <div class="other_left_arrow">
+              <img src="{% static 'catalog/images/assets/icons/arrow-left-car.svg' %}" alt="" />
+            </div>
+            <div class="other_right_arrow">
+              <img src="{% static 'catalog/images/assets/icons/arrow-right-car.svg' %}" alt="" />
+            </div>
+          </div>
+          <div class="other_books_carousel">
+            {% for book in translator_books %}
+            <div class="other_block_item_wrapper">
+              <div class="other_block_item">
+                <a href="{% url 'catalog:Book_Base' slug=book.slug %}">
+                  <img src="{{ book.image.url }}" alt="" />
+                </a>
+                <p>Переклад книги “{{ book.title_en }}”</p>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="about_page_wrapper">
+        <!-- Other parts -->
+        <div class="other_parts">
+          <div class="other_parts_titles">
+            <p>Вартість</p>
+            <p>Назва</p>
+            <p>Створення</p>
+          </div>
+          <div class="other_parts_table">
+            {% for chapter in chapters %}
+            <div class="other_parts_table_row">
+              <div class="other_parts_table_row_content">
+                <div class="parts_table_cost">
+                  <input type="checkbox" />
+                  <p>{{ chapter.price }}$</p>
+                </div>
+                <div class="parts_table_title">
+                  <p>
+                    <a href="{% url 'catalog:chapter_detail' book.slug chapter.slug %}">
+                      {{ chapter.title }}
+                    </a>
+                  </p>
+                </div>
+                <div class="parts_table_date">
+                  <p>{{ chapter.created_at|date:"d.m.Y" }}</p>
+                </div>
+                <div class="parts_table_action">
+                  <a class="about_book_action" href="{% url 'catalog:chapter_detail' book.slug chapter.slug %}">
+                    <img src="{% static 'catalog/images/assets/icons/read.svg' %}" alt="" />
+                    <p>Читати</p>
+                  </a>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="other_parts_actions">
+            <div>
+              <button class="about_book_action">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M6.44784 8.96942C6.76219 6.14032 9.15349 4 12 4V4C14.8465 4 17.2378 6.14032 17.5522 8.96942L17.804 11.2356C17.8072 11.2645 17.8088 11.279 17.8104 11.2933C17.9394 12.4169 18.3051 13.5005 18.8836 14.4725C18.8909 14.4849 18.8984 14.4973 18.9133 14.5222L19.4914 15.4856C20.0159 16.3599 20.2782 16.797 20.2216 17.1559C20.1839 17.3946 20.061 17.6117 19.8757 17.7668C19.5971 18 19.0873 18 18.0678 18H5.93223C4.91268 18 4.40291 18 4.12434 17.7668C3.93897 17.6117 3.81609 17.3946 3.77841 17.1559C3.72179 16.797 3.98407 16.3599 4.50862 15.4856L5.08665 14.5222C5.10161 14.4973 5.10909 14.4849 5.11644 14.4725C5.69488 13.5005 6.06064 12.4169 6.18959 11.2933C6.19123 11.279 6.19283 11.2645 6.19604 11.2356L6.44784 8.96942Z"
+                    stroke="white"
+                  />
+                  <path
+                    d="M9.10222 18.4059C9.27315 19.1501 9.64978 19.8077 10.1737 20.2767C10.6976 20.7458 11.3396 21 12 21C12.6604 21 13.3024 20.7458 13.8263 20.2767C14.3502 19.8077 14.7269 19.1501 14.8978 18.4059"
+                    stroke="white"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                <p>Підписка</p>
+              </button>
+            </div>
+            <div>
+              <button class="about_book_action">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M5.23852 14.8117C5.63734 16.3002 6.51616 17.6154 7.73867 18.5535C8.96118 19.4915 10.4591 20 12 20C13.5409 20 15.0388 19.4915 16.2613 18.5535C17.4838 17.6154 18.3627 16.3002 18.7615 14.8117"
+                    stroke="white"
+                  />
+                  <path
+                    d="M12 13L11.6877 13.3904L12 13.6403L12.3123 13.3904L12 13ZM12.5 4C12.5 3.72386 12.2761 3.5 12 3.5C11.7239 3.5 11.5 3.72386 11.5 4L12.5 4ZM6.68765 9.39043L11.6877 13.3904L12.3123 12.6096L7.31235 8.60957L6.68765 9.39043ZM12.3123 13.3904L17.3123 9.39043L16.6877 8.60957L11.6877 12.6096L12.3123 13.3904ZM12.5 13L12.5 4L11.5 4L11.5 13L12.5 13Z"
+                    fill="white"
+                  />
+                </svg>
+                <p>.fb2</p>
+              </button>
+              <button class="about_book_action">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M5.23852 14.8117C5.63734 16.3002 6.51616 17.6154 7.73867 18.5535C8.96118 19.4915 10.4591 20 12 20C13.5409 20 15.0388 19.4915 16.2613 18.5535C17.4838 17.6154 18.3627 16.3002 18.7615 14.8117"
+                    stroke="white"
+                  />
+                  <path
+                    d="M12 13L11.6877 13.3904L12 13.6403L12.3123 13.3904L12 13ZM12.5 4C12.5 3.72386 12.2761 3.5 12 3.5C11.7239 3.5 11.5 3.72386 11.5 4L12.5 4ZM6.68765 9.39043L11.6877 13.3904L12.3123 12.6096L7.31235 8.60957L6.68765 9.39043ZM12.3123 13.3904L17.3123 9.39043L16.6877 8.60957L11.6877 12.6096L12.3123 13.3904ZM12.5 13L12.5 4L11.5 4L11.5 13L12.5 13Z"
+                    fill="white"
+                  />
+                </svg>
+                <p>.docx</p>
+              </button>
+              <button class="about_book_action">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M5.23852 14.8117C5.63734 16.3002 6.51616 17.6154 7.73867 18.5535C8.96118 19.4915 10.4591 20 12 20C13.5409 20 15.0388 19.4915 16.2613 18.5535C17.4838 17.6154 18.3627 16.3002 18.7615 14.8117"
+                    stroke="white"
+                  />
+                  <path
+                    d="M12 13L11.6877 13.3904L12 13.6403L12.3123 13.3904L12 13ZM12.5 4C12.5 3.72386 12.2761 3.5 12 3.5C11.7239 3.5 11.5 3.72386 11.5 4L12.5 4ZM6.68765 9.39043L11.6877 13.3904L12.3123 12.6096L7.31235 8.60957L6.68765 9.39043ZM12.3123 13.3904L17.3123 9.39043L16.6877 8.60957L11.6877 12.6096L12.3123 13.3904ZM12.5 13L12.5 4L11.5 4L11.5 13L12.5 13Z"
+                    fill="white"
+                  />
+                </svg>
+                <p>Заванажити одним файлом</p>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Comments -->
+        <div class="comment_block">
+          <div class="comment_block_title">
+            <h2>Коментарі</h2>
+          </div>
+          <div class="comment_block_content" id="comment_block_content">
+          {% for comment in comments %}
+            <div class="comment_block_item" id="comment_block_item{{comment.id}}">
+              <div class="comment_block_item_img">
+                <img src="{% static 'catalog/images/assets/images/profile.png' %}" alt="" />
+              </div>
+              <div class="comment_block_item_content" id="comment-{{ comment.id }}">
+                <div class="comment_autor">
+                  <p>{{ comment.owner.user.username }}</p>
+                  <span>{{ comment.published|timesince }}</span>
+                </div>
+                <div class="comment_text">
+                  <p>
+                    {{ comment.text }}
+                  </p>
+                </div>
+                <div class="comment_action">
+                  <p>Сподобався коментар?</p>
+                  <button class="like-button {% for i in comment.likes.all %}{% if i.user == us %}active{% endif %}{% endfor %}" id="like{{ comment.id }}" data-url="{% url 'catalog:like_comment' comment.id %}" data-cid="{{ comment.id }}">
+                    <svg
+                      class="lk"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="23"
+                      height="23"
+                      viewBox="0 0 23 23"
+                      fill="none"
+                  >
+                      <path
+                      d="M9 11.2857L10.8 13L15 9M12 6.59097L11.8456 6.42726C9.86801 4.33053 6.59738 4.57698 4.91934 6.94915C3.42999 9.05459 3.78668 12.0335 5.725 13.6776L12 19L18.275 13.6776C20.2133 12.0335 20.57 9.05459 19.0807 6.94915C17.4026 4.57697 14.132 4.33053 12.1544 6.42726L12 6.59097Z"
+                      fill="#5E626C"
+                      stroke="#464455"
+                      stroke-width="2"
+                    />
+                    </svg>
+                    <p class="likecount" id="likes-{{ comment.id }}" value="{{ comment.likes_count }}">{{ comment.likes_count }}</p>
+                  </button>
+                  <button class="dislike-button {% for i in comment.dislikes.all %}{% if i.user == us %}active{% endif %}{% endfor %}" id="dislike{{ comment.id }}" data-url="{% url 'catalog:dislike_comment' comment.id %}" data-cid="{{ comment.id }}">
+                    <svg
+                      class="dlk"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="23"
+                      height="23"
+                      viewBox="0 0 23 23"
+                      fill="none"
+                  >
+                      <path
+                      d="M10 9.5L14 13.5M14 9.5L10 13.5M12 6.59097L11.8456 6.42726C9.86802 4.33054 6.5974 4.57698 4.91936 6.94915C3.43 9.05459 3.78669 12.0335 5.72501 13.6776L12 19L18.275 13.6776C20.2133 12.0335 20.57 9.05459 19.0807 6.94915C17.4026 4.57698 14.132 4.33054 12.1544 6.42726L12 6.59097Z"
+                      fill="#5E626C"
+                      stroke="#464455"
+                      stroke-width="2"
+                    />
+                    </svg>
+                    <p class="dislikecount" id="dislikes-{{ comment.id }}" value="{{ comment.dislikes_count }}">{{ comment.dislikes_count }}</p>
+                  </button>
+                </div>
+              </div>
+              <a href="#comment-form" class="reply_button" onclick="replyComment('{{comment.owner.user.username}}', '{{comment.id}}')">Відповісти</a>
+              <div class="delete-button">
+                {% if user == comment.owner.user %}
+                  <button class="delete-button" id="delete-button{{ comment.id }}"data-url="{% url 'catalog:delete_comment' comment.id %}" data-cid="{{ comment.id }}">Видалити коментар</button>
+                {% endif %}
+              </div>
+            </div>
+            <script>
+              $("#comment_block_item{{comment.id}}").on("click", "#delete-button{{comment.id}}", function(){
+                // Сохраняем идентификатор комментария из data-атрибута кнопки удаления в переменной commentId
+                let commentId = $(this).data('cid');
+
+                // Находим div комментария, который соответствует данному идентификатору, используя этот уникальный идентификатор
+                let commentDiv = $("#comment_block_item{{comment.id}}");
+
+                // Инициируем AJAX запрос с помощью jQuery
+                $.ajax({
+                    // Тип запроса - POST
+                    type: "POST",
+                    // URL для запроса берется из data-атрибута кнопки удаления
+                    url: $(this).data('url'),
+                    // Данные, которые мы отправляем на сервер. Мы отправляем CSRF токен для защиты от CSRF атак.
+                    data: {
+                        'csrfmiddlewaretoken': getCookie('csrftoken')
+                    },
+                    // Функция, которая будет вызвана при успешном ответе сервера
+                    success: function(response){
+                        // Если сервер успешно обработал запрос, мы удаляем div с комментарием из DOM.
+                        commentDiv.remove();
+                        window.location.reload()
+                    }
+                });
+              });
+            </script>
+            <script>
+              // Функция для получения значения куки по имени
+             function getCookie(name) {
+                 let cookieValue = null;  // Значение куки по умолчанию
+
+                 // Проверяем, есть ли какие-либо куки
+                 if (document.cookie && document.cookie !== '') {
+                     // Разбиваем все куки на массив по разделителю ';'
+                     let cookies = document.cookie.split(';');
+
+                     // Перебираем каждое куки в массиве
+                     for (let i = 0; i < cookies.length; i++) {
+                         // Удаляем лишние пробелы в начале и в конце строки
+                         let cookie = jQuery.trim(cookies[i]);
+
+                         // Проверяем, начинается ли куки с нужного имени
+                         if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                             // Если да, то декодируем значение куки и прерываем цикл
+                             cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                             break;
+                         }
+                     }
+                 }
+                 // Возвращаем значение куки
+                 return cookieValue;
+            }
+            // Обрабатываем нажатие кнопки "Like"
+            $("#comment_block_item{{comment.id}}").on("click", "#like{{comment.id}}", function(){
+                let commentId = $(this).data('cid');  // Получаем id комментария
+                var lkn = $("#likes-{{ comment.id }}");
+                var lknum = lkn.attr("value")
+                // Выполняем асинхронный POST-запрос на URL, указанный в атрибуте data-url кнопки
+                $.ajax({
+                    type: "POST",
+                    url: $(this).data('url'),
+                    data: {
+                        'csrfmiddlewaretoken': getCookie('csrftoken')  // Передаем CSRF-токен
+                    },
+
+                    // Функция выполняется при успешном завершении запроса
+                    success: function(response){
+                        // Обновляем количество лайков и дизлайков для комментария
+                        if (lknum < response.likes) {
+                          $("#like{{comment.id}}").addClass('active');
+                          $("#dislike{{comment.id}}").removeClass('active');
+                          $('#likes-'+commentId).text(response.likes);
+                          $('#likes-'+commentId).attr("value", response.likes)
+                          $('#dislikes-'+commentId).text(response.dislikes);
+                          $('#dislikes-'+commentId).attr("value", response.dislikes)
+                        } else {
+                          $("#like{{comment.id}}").removeClass('active');
+                          $('#likes-'+commentId).text(response.likes);
+                          $('#likes-'+commentId).attr("value", response.likes)
+                          $('#dislikes-'+commentId).text(response.dislikes);
+                          $('#dislikes-'+commentId).attr("value", response.dislikes)
+                        }
+                      }
+                });
+            });
+            // Обрабатываем нажатие кнопки "Dislike" по аналогии с кнопкой "Like"
+            $("#comment_block_item{{comment.id}}").on("click", "#dislike{{comment.id}}", function(){
+                let commentId = $(this).data('cid');
+                var dlkn = $("#dislikes-{{ comment.id }}");
+                var dlknum = dlkn.attr("value")
+                console.log(dlknum);
+                $.ajax({
+                    type: "POST",
+                    url: $(this).data('url'),
+                    data: {
+                        'csrfmiddlewaretoken': getCookie('csrftoken')
+                    },
+                    success: function(response){
+                      if (dlknum < response.dislikes) {
+                          $("#dislike{{comment.id}}").addClass('active');
+                          $("#like{{comment.id}}").removeClass('active');
+                          $('#dislikes-'+commentId).text(response.dislikes);
+                          $('#dislikes-'+commentId).attr("value", response.dislikes)
+                          $('#likes-'+commentId).text(response.likes);
+                          $('#likes-'+commentId).attr("value", response.likes)
+                      } else {
+                          $("#dislike{{comment.id}}").removeClass('active');
+                          $('#dislikes-'+commentId).text(response.dislikes);
+                          $('#dislikes-'+commentId).attr("value", response.dislikes)
+                          $('#likes-'+commentId).text(response.likes);
+                          $('#likes-'+commentId).attr("value", response.likes)
+                      }
+                    }
+                });
+            });
+            </script>
+            {% for com in comments_reply %}
+            {% if com.parent_id == comment.id %}
+            <div class="comment_block_item_reply" id="comment_block_item_reply{{com.id}}">
+              <div class="comment_block_item_img">
+                <img src="{% static 'catalog/images/assets/images/profile.png' %}" alt="" />
+              </div>
+              <div class="comment_block_item_content" id="comment-{{ com.id }}">
+                <div class="comment_autor">
+                  <p>{{ com.owner.user.username }}</p>
+                  <span>{{ com.published|timesince }}</span>
+                </div>
+                <div class="comment_text">
+                  <p>
+                    {{ com.text }}
+                  </p>
+                </div>
+                <div class="comment_action">
+                  <p>Сподобався коментар?</p>
+                  <button class="like-button {% for i in com.likes.all %}{% if i.user == us %}active{% endif %}{% endfor %}" id="rep_like{{ com.id }}" data-url="{% url 'catalog:like_comment' com.id %}" data-cid="{{ com.id }}">
+                    <svg
+                    class="lk"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="23"
+                    height="23"
+                    viewBox="0 0 23 23"
+                    fill="none"
+                    >
+                    <path
+                    d="M9 11.2857L10.8 13L15 9M12 6.59097L11.8456 6.42726C9.86801 4.33053 6.59738 4.57698 4.91934 6.94915C3.42999 9.05459 3.78668 12.0335 5.725 13.6776L12 19L18.275 13.6776C20.2133 12.0335 20.57 9.05459 19.0807 6.94915C17.4026 4.57697 14.132 4.33053 12.1544 6.42726L12 6.59097Z"
+                    fill="#5E626C"
+                    stroke="#464455"
+                    stroke-width="2"
+                    />
+                  </svg>
+                  <p class="likecount" id="rep_likes-{{ com.id }}" value="{{ com.likes_count }}">{{ com.likes_count }}</p>
+                </button>
+                <button class="dislike-button {% for i in com.dislikes.all %}{% if i.user == us %}active{% endif %}{% endfor %}" id="rep_dislike{{ com.id }}" data-url="{% url 'catalog:dislike_comment' com.id %}" data-cid="{{ com.id }}">
+                  <svg
+                  class="dlk"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="23"
+                  height="23"
+                  viewBox="0 0 23 23"
+                  fill="none"
+                  >
+                  <path
+                  d="M10 9.5L14 13.5M14 9.5L10 13.5M12 6.59097L11.8456 6.42726C9.86802 4.33054 6.5974 4.57698 4.91936 6.94915C3.43 9.05459 3.78669 12.0335 5.72501 13.6776L12 19L18.275 13.6776C20.2133 12.0335 20.57 9.05459 19.0807 6.94915C17.4026 4.57698 14.132 4.33054 12.1544 6.42726L12 6.59097Z"
+                  fill="#5E626C"
+                  stroke="#464455"
+                  stroke-width="2"
+                  />
+                </svg>
+                <p class="dislikecount" id="rep_dislikes-{{ com.id }}" value="{{ com.dislikes_count }}">{{ com.dislikes_count }}</p>
+              </button>
+            </div>
+          </div>
+          <!-- <a href="#comment-form" class="reply_button" onclick="replyComment('{{com.owner.user.username}}', '{{com.id}}')">Відповісти</a> -->
+          <div class="delete-button">
+            {% if user == com.owner.user %}
+              <button class="delete-button" id="delete-button{{ com.id }}"data-url="{% url 'catalog:delete_comment' com.id %}" data-cid="{{ com.id }}">Видалити коментар</button>
+            {% endif %}
+          </div>
+            </div>
+            <script>
+              // Функция для получения значения куки по имени
+              function getCookie(name) {
+                let cookieValue = null;  // Значение куки по умолчанию
+
+                // Проверяем, есть ли какие-либо куки
+                if (document.cookie && document.cookie !== '') {
+                  // Разбиваем все куки на массив по разделителю ';'
+                  let cookies = document.cookie.split(';');
+
+                  // Перебираем каждое куки в массиве
+                  for (let i = 0; i < cookies.length; i++) {
+                    // Удаляем лишние пробелы в начале и в конце строки
+                    let cookie = jQuery.trim(cookies[i]);
+
+                    // Проверяем, начинается ли куки с нужного имени
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                      // Если да, то декодируем значение куки и прерываем цикл
+                      cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                      break;
+                    }
+                  }
+                }
+                // Возвращаем значение куки
+                return cookieValue;
+              }
+              // Обрабатываем нажатие кнопки "Like"
+              $("#comment_block_item_reply{{com.id}}").on("click", "#rep_like{{com.id}}", function(){
+                let commentId = $(this).data('cid');  // Получаем id комментария
+                var lkn = $("#rep_likes-{{ com.id }}");
+                var lknum = lkn.attr("value")
+                console.log(lknum);
+                // Выполняем асинхронный POST-запрос на URL, указанный в атрибуте data-url кнопки
+                $.ajax({
+                  type: "POST",
+                  url: $(this).data('url'),
+                  data: {
+                    'csrfmiddlewaretoken': getCookie('csrftoken')  // Передаем CSRF-токен
+                  },
+
+                  // Функция выполняется при успешном завершении запроса
+                  success: function(response){
+                    // Обновляем количество лайков и дизлайков для комментария
+                    if (lknum < response.likes) {
+                      $("#rep_like{{com.id}}").addClass('active');
+                      $("#rep_dislike{{com.id}}").removeClass('active');
+                      $('#rep_likes-'+commentId).text(response.likes);
+                      $('#rep_likes-'+commentId).attr("value", response.likes)
+                      $('#rep_dislikes-'+commentId).text(response.dislikes);
+                      $('#rep_dislikes-'+commentId).attr("value", response.dislikes)
+                    } else {
+                      $("#rep_like{{com.id}}").removeClass('active');
+                      $('#rep_likes-'+commentId).text(response.likes);
+                      $('#rep_likes-'+commentId).attr("value", response.likes)
+                      $('#rep_dislikes-'+commentId).text(response.dislikes);
+                      $('#rep_dislikes-'+commentId).attr("value", response.dislikes)
+                    }
+                  }
+                });
+              });
+              // Обрабатываем нажатие кнопки "Dislike" по аналогии с кнопкой "Like"
+              $("#comment_block_item_reply{{com.id}}").on("click", "#rep_dislike{{com.id}}", function(){
+                let commentId = $(this).data('cid');
+                var dlkn = $("#rep_dislikes-{{ com.id }}");
+                var dlknum = dlkn.attr("value")
+                console.log(dlknum);
+                $.ajax({
+                  type: "POST",
+                  url: $(this).data('url'),
+                  data: {
+                    'csrfmiddlewaretoken': getCookie('csrftoken')
+                  },
+                  success: function(response){
+                    if (dlknum < response.dislikes) {
+                      $("#rep_dislike{{com.id}}").addClass('active');
+                      $("#rep_like{{com.id}}").removeClass('active');
+                      $('#rep_dislikes-'+commentId).text(response.dislikes);
+                      $('#rep_dislikes-'+commentId).attr("value", response.dislikes)
+                      $('#rep_likes-'+commentId).text(response.likes);
+                      $('#rep_likes-'+commentId).attr("value", response.likes)
+                    } else {
+                      $("#rep_dislike{{com.id}}").removeClass('active');
+                      $('#rep_dislikes-'+commentId).text(response.dislikes);
+                      $('#rep_dislikes-'+commentId).attr("value", response.dislikes)
+                      $('#rep_likes-'+commentId).text(response.likes);
+                      $('#rep_likes-'+commentId).attr("value", response.likes)
+                    }
+                  }
+                });
+              });
+            </script>
+            <script>
+              $("#comment_block_item_reply{{com.id}}").on("click", "#delete-button{{com.id}}", function(){
+                // Сохраняем идентификатор комментария из data-атрибута кнопки удаления в переменной commentId
+                let commentId = $(this).data('cid');
+
+                // Находим div комментария, который соответствует данному идентификатору, используя этот уникальный идентификатор
+                let commentDiv = $("#comment_block_item_reply{{com.id}}");
+
+                // Инициируем AJAX запрос с помощью jQuery
+                $.ajax({
+                    // Тип запроса - POST
+                    type: "POST",
+                    // URL для запроса берется из data-атрибута кнопки удаления
+                    url: $(this).data('url'),
+                    // Данные, которые мы отправляем на сервер. Мы отправляем CSRF токен для защиты от CSRF атак.
+                    data: {
+                        'csrfmiddlewaretoken': getCookie('csrftoken')
+                    },
+                    // Функция, которая будет вызвана при успешном ответе сервера
+                    success: function(response){
+                        // Если сервер успешно обработал запрос, мы удаляем div с комментарием из DOM.
+                        commentDiv.remove();
+                    }
+                });
+              });
+            </script>
+            {% endif %}
+              {% endfor %}
+            {% endfor %}
+          </div>
+          <div class="comment_form">
+          <form id="comment-form" method="post">
+             {% csrf_token %}
+             <input type="hidden" name="parent" id="contactparent" value="">
+             {{ comment_form.text }}
+             <button type="submit" id="btn-com">Надіслати</button>
+          </form>
+          </div>
+        </div>
+      </div>
+      <script>
+        $(document).ready(function(){
+
+          // Обрабатываем событие отправки формы комментария
+          $("#comment-form").off('submit').on('submit', function(e){
+            id_reply = document.getElementById("contactparent").value
+            console.log("id of reply "+id_reply);
+            e.preventDefault();  // Отменяем стандартное поведение браузера при отправке формы
+
+            // Выполняем асинхронный POST-запрос на текущую страницу
+            $.ajax({
+                type: "POST",  // Метод запроса
+                url: window.location.href,  // URL для запроса
+                data: $(this).serialize(),  // Сериализуем данные формы
+
+                // Функция выполняется при успешном завершении запроса
+                success: function(response){
+                  if (id_reply) {
+                    console.log("ID received");
+                    $('#comment-form')[0].reset();
+                    var newCommentReplyHtml = `<div class="comment_block_item_reply" id="comment_block_item_reply`+response.id+`">`;
+                      newCommentReplyHtml += `
+                      <input type="hidden" id="com_id" value="`+response.id+`"><div class="comment_block_item_img">
+                        <img src="{% static 'catalog/images/assets/images/profile.png' %}" alt="" />
+                      </div>
+                        <div class="comment_block_item_content" id="comment-`+response.id+`">
+                        <div class="comment_autor">
+                          <p>`+response.owner+`</p>
+                          <span>0 minutes</span>
+                        </div>
+                        <div class="comment_text">
+                          <p>
+                            `+response.text+`
+                          </p>
+                        </div>
+                        <div class="comment_action">
+                          <p>Сподобався коментар?</p>
+                          <button class="like-button" id="like`+response.id+`" data-url="catalog/like_comment/`+ response.id +`/" data-cid="`+response.id+`">
+                            <svg
+                            class="lk"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="23"
+                            height="23"
+                            viewBox="0 0 23 23"
+                            fill="none"
+                            >
+                            <path
+                            d="M9 11.2857L10.8 13L15 9M12 6.59097L11.8456 6.42726C9.86801 4.33053 6.59738 4.57698 4.91934 6.94915C3.42999 9.05459 3.78668 12.0335 5.725 13.6776L12 19L18.275 13.6776C20.2133 12.0335 20.57 9.05459 19.0807 6.94915C17.4026 4.57697 14.132 4.33053 12.1544 6.42726L12 6.59097Z"
+                            fill="#5E626C"
+                            stroke="#464455"
+                            stroke-width="2"
+                            />
+                          </svg>
+                          <p class="likecount" id="likes-`+response.id+`" value="`+response.likes_count+`">`+response.likes_count+`</p>
+                        </button>
+                        <button class="dislike-button" id="dislike`+response.id+`" data-url="catalog/dislike_comment/`+ response.id +`/" data-cid="`+response.id+`">
+                          <svg
+                          class="dlk"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="23"
+                          height="23"
+                          viewBox="0 0 23 23"
+                          fill="none"
+                          >
+                          <path
+                          d="M10 9.5L14 13.5M14 9.5L10 13.5M12 6.59097L11.8456 6.42726C9.86802 4.33054 6.5974 4.57698 4.91936 6.94915C3.43 9.05459 3.78669 12.0335 5.72501 13.6776L12 19L18.275 13.6776C20.2133 12.0335 20.57 9.05459 19.0807 6.94915C17.4026 4.57698 14.132 4.33054 12.1544 6.42726L12 6.59097Z"
+                          fill="#5E626C"
+                          stroke="#464455"
+                          stroke-width="2"
+                          />
+                        </svg>
+                        <p class="dislikecount" id="dislikes-`+response.id+`" value="`+response.dislikes_count+`">`+response.dislikes_count+`</p>
+                      </button>
+                    </div>
+                  </div>
+                  <!--<a href="#comment-form" class="reply_button" onclick="replyComment('`+ response.owner +`', '`+ response.id +`')">Відповісти</a>-->
+                  <div class="delete-button">
+                    <button class="delete-button" id="delete-button`+response.id+`"data-url="catalog/delete_comment/`+response.id+`/" data-cid="`+response.id+`">Видалити коментар</button>
+                  </div>
+                </div>`
+                let par = $('#comment_block_content');
+                let existing = $('#comment_block_item'+response.parentid);
+                existing.after(newCommentReplyHtml);
+                likeReplyBtn(response.id);
+                dislikeReplyBtn(response.id);
+                deleteReplyBtn(response.id);
+                // replyComment(response.owner, response.id);
+                $('#comment-form')[0].reset();
+                $('#id_text').text('');
+                document.getElementById("contactparent").value = '';
+                  } else {
+                      console.log("ELSE");
+                      // Сбрасываем форму
+                      $('#comment-form')[0].reset();
+                      var newCommentHtml = `<div class="comment_block_item" id="comment_block_item`+response.id+`">`;
+                        newCommentHtml += `<input type="hidden" id="com_id" value="`+response.id+`"><div class="comment_block_item_img">
+                          <img src="{% static 'catalog/images/assets/images/profile.png' %}" alt="" />
+                        </div><div class="comment_block_item_content" id="comment-`+ response.id+`">
+                          <div class="comment_autor">
+                            <p>`+response.owner+`</p>
+                            <span>0 minutes</span>
+                          </div>
+                          <div class="comment_text">
+                            <p>`+response.text+`</p>
+                          </div>
+                          <div class="comment_action">
+                            <p>Сподобався коментар?</p>
+                            <button class="like-button" id="like`+response.id+`" data-url="catalog/like_comment/`+ response.id +`/" data-cid="`+response.id+`">
+                              <svg
+                                class="lk"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="23"
+                                height="23"
+                                viewBox="0 0 23 23"
+                                fill="none"
+                            >
+                                <path
+                                d="M9 11.2857L10.8 13L15 9M12 6.59097L11.8456 6.42726C9.86801 4.33053 6.59738 4.57698 4.91934 6.94915C3.42999 9.05459 3.78668 12.0335 5.725 13.6776L12 19L18.275 13.6776C20.2133 12.0335 20.57 9.05459 19.0807 6.94915C17.4026 4.57697 14.132 4.33053 12.1544 6.42726L12 6.59097Z"
+                                fill="#5E626C"
+                                stroke="#464455"
+                                stroke-width="2"
+                              />
+                              </svg>
+                              <p class="likecount" id="likes-`+response.id+`" value="`+response.likes_count+`">`+response.likes_count+`</p>
+                            </button>
+                            <button class="dislike-button" id="dislike`+response.id+`" data-url="catalog/dislike_comment/`+ response.id +`/" data-cid="`+response.id+`">
+                              <svg
+                                class="dlk"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="23"
+                                height="23"
+                                viewBox="0 0 23 23"
+                                fill="none"
+                            >
+                                <path
+                                d="M10 9.5L14 13.5M14 9.5L10 13.5M12 6.59097L11.8456 6.42726C9.86802 4.33054 6.5974 4.57698 4.91936 6.94915C3.43 9.05459 3.78669 12.0335 5.72501 13.6776L12 19L18.275 13.6776C20.2133 12.0335 20.57 9.05459 19.0807 6.94915C17.4026 4.57698 14.132 4.33054 12.1544 6.42726L12 6.59097Z"
+                                fill="#5E626C"
+                                stroke="#464455"
+                                stroke-width="2"
+                              />
+                              </svg>
+                              <p class="dislikecount" id="dislikes-`+response.id+`" value="`+response.dislikes_count+`">`+response.dislikes_count+`</p>
+                            </button>
+                          </div>
+                        </div>
+                        <a href="#comment-form" class="reply_button" onclick="replyComment('`+ response.owner +`', '`+ response.id +`')">Відповісти</a>
+                        <div class="delete-button">
+                          <button class="delete-button" id="delete-button`+response.id+`"data-url="catalog/delete_comment/`+response.id+`/" data-cid="`+response.id+`">Видалити коментар</button>
+                        </div>
+                      </div>`;
+                        let par = $('#comment_block_content');
+                        par.prepend(newCommentHtml);
+                        likeBtn(response.id);
+                        dislikeBtn(response.id);
+                        deleteBtn(response.id);
+                        // replyComment(response.owner, response.id);
+                    }
+                },
+                // Функция выполняется при возникновении ошибки
+                error: function(error) {
+                  console.log(error);  // Логируем ошибку
+                }
+                    });
+                  });
+                });
+      </script>
+      <script>
+        var bookmark_modal = document.getElementById('bookmark_modal');
+        var bookmark_btn = document.getElementById('bookmark_btn');
+        var close_bookmark = document.getElementById('close_bookmark');
+        function openModalWindow() {
+          bookmark_modal.style.display = "block";
+        }
+        function closeModalWindow() {
+          bookmark_modal.style.display = "none";
+        }
+      </script>
+      <script>
+        // Функция для получения значения куки по имени
+        function getCookie(name) {
+           let cookieValue = null;  // Значение куки по умолчанию
+
+           // Проверяем, есть ли какие-либо куки
+           if (document.cookie && document.cookie !== '') {
+               // Разбиваем все куки на массив по разделителю ';'
+               let cookies = document.cookie.split(';');
+
+               // Перебираем каждое куки в массиве
+               for (let i = 0; i < cookies.length; i++) {
+                   // Удаляем лишние пробелы в начале и в конце строки
+                   let cookie = jQuery.trim(cookies[i]);
+
+                   // Проверяем, начинается ли куки с нужного имени
+                   if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                       // Если да, то декодируем значение куки и прерываем цикл
+                       cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                       break;
+                   }
+               }
+           }
+           // Возвращаем значение куки
+           return cookieValue;
+      }
+        function likeBtn(com_id) {
+          let comment_id = com_id
+          var lkn = $("#likes-"+comment_id);
+          var lknum = lkn.attr("value")
+          console.log(lknum);
+          console.log(comment_id);
+          $("#comment_block_item"+comment_id).on("click", "#like"+comment_id, function(){
+
+            $.ajax({
+              type: "POST",
+              url: "/catalog/like_comment/"+comment_id+"/",
+              data: {
+                'csrfmiddlewaretoken': getCookie('csrftoken')  // Передаем CSRF-токен
+              },
+              success: function(response){
+                // Обновляем количество лайков и дизлайков для комментария
+                if (lknum < response.likes) {
+                  $("#like"+comment_id).addClass('active');
+                  $("#dislike"+comment_id).removeClass('active');
+                  $('#likes-'+comment_id).text(response.likes);
+                  $('#likes-'+comment_id).attr("value", response.likes)
+                  $('#dislikes-'+comment_id).text(response.dislikes);
+                  $('#dislikes-'+comment_id).attr("value", response.dislikes)
+                } else {
+                  $("#like"+comment_id).removeClass('active');
+                  $('#likes-'+comment_id).text(response.likes);
+                  $('#likes-'+comment_id).attr("value", response.likes)
+                  $('#dislikes-'+comment_id).text(response.dislikes);
+                  $('#dislikes-'+comment_id).attr("value", response.dislikes)
+                }
+              }
+            });
+          });
+        }
+        function dislikeBtn(com_id) {
+          let comment_id = com_id
+          var dlkn = $("#dislikes-"+comment_id);
+          var dlknum = dlkn.attr("value")
+          console.log(comment_id);
+          $("#comment_block_item"+comment_id).on("click", "#dislike"+comment_id, function(){
+
+            $.ajax({
+              type: "POST",
+              url: "/catalog/dislike_comment/"+comment_id+"/",
+              data: {
+                'csrfmiddlewaretoken': getCookie('csrftoken')  // Передаем CSRF-токен
+              },
+              success: function(response){
+                // Обновляем количество лайков и дизлайков для комментария
+                if (dlknum < response.dislikes) {
+                  $("#dislike"+comment_id).addClass('active');
+                  $("#like"+comment_id).removeClass('active');
+                  $('#dislikes-'+comment_id).text(response.dislikes);
+                  $('#dislikes-'+comment_id).attr("value", response.dislikes)
+                  $('#likes-'+comment_id).text(response.likes);
+                  $('#likes-'+comment_id).attr("value", response.likes)
+                } else {
+                  $("#dislike"+comment_id).removeClass('active');
+                  $('#dislikes-'+comment_id).text(response.dislikes);
+                  $('#dislikes-'+comment_id).attr("value", response.dislikes)
+                  $('#likes-'+comment_id).text(response.likes);
+                  $('#likes-'+comment_id).attr("value", response.likes)
+                }
+              }
+            });
+          });
+        }
+        function deleteBtn(comment_id) {
+          $("#comment_block_item"+comment_id).on("click", "#delete-button"+comment_id, function(){
+            // Находим div комментария, который соответствует данному идентификатору, используя этот уникальный идентификатор
+            let commentDiv = $("#comment_block_item"+comment_id);
+
+            // Инициируем AJAX запрос с помощью jQuery
+            $.ajax({
+              // Тип запроса - POST
+              type: "POST",
+              // URL для запроса берется из data-атрибута кнопки удаления
+              url: "/catalog/delete_comment/"+comment_id+"/",
+              // Данные, которые мы отправляем на сервер. Мы отправляем CSRF токен для защиты от CSRF атак.
+              data: {
+                'csrfmiddlewaretoken': getCookie('csrftoken')
+              },
+              // Функция, которая будет вызвана при успешном ответе сервера
+              success: function(response){
+                // Если сервер успешно обработал запрос, мы удаляем div с комментарием из DOM.
+                commentDiv.remove();
+                window.location.reload();
+              }
+            });
+          });
+        }
+        function replyComment(name, id) {
+          document.getElementById("contactparent").value = id;
+          document.getElementById("id_text").innerText = `${name}, `;
+        }
+
+        function likeReplyBtn(com_id) {
+          let comment_id = com_id
+          var lkn = $("#likes-"+comment_id);
+          var lknum = lkn.attr("value")
+          console.log(lknum);
+          console.log(comment_id);
+          $("#comment_block_item_reply"+comment_id).on("click", "#like"+comment_id, function(){
+
+            $.ajax({
+              type: "POST",
+              url: "/catalog/like_comment/"+comment_id+"/",
+              data: {
+                'csrfmiddlewaretoken': getCookie('csrftoken')  // Передаем CSRF-токен
+              },
+              success: function(response){
+                // Обновляем количество лайков и дизлайков для комментария
+                if (lknum < response.likes) {
+                  $("#like"+comment_id).addClass('active');
+                  $("#dislike"+comment_id).removeClass('active');
+                  $('#likes-'+comment_id).text(response.likes);
+                  $('#likes-'+comment_id).attr("value", response.likes)
+                  $('#dislikes-'+comment_id).text(response.dislikes);
+                  $('#dislikes-'+comment_id).attr("value", response.dislikes)
+                } else {
+                  $("#like"+comment_id).removeClass('active');
+                  $('#likes-'+comment_id).text(response.likes);
+                  $('#likes-'+comment_id).attr("value", response.likes)
+                  $('#dislikes-'+comment_id).text(response.dislikes);
+                  $('#dislikes-'+comment_id).attr("value", response.dislikes)
+                }
+              }
+            });
+          });
+        }
+        function dislikeReplyBtn(com_id) {
+          let comment_id = com_id
+          var dlkn = $("#dislikes-"+comment_id);
+          var dlknum = dlkn.attr("value")
+          console.log(comment_id);
+          $("#comment_block_item_reply"+comment_id).on("click", "#dislike"+comment_id, function(){
+
+            $.ajax({
+              type: "POST",
+              url: "/catalog/dislike_comment/"+comment_id+"/",
+              data: {
+                'csrfmiddlewaretoken': getCookie('csrftoken')  // Передаем CSRF-токен
+              },
+              success: function(response){
+                // Обновляем количество лайков и дизлайков для комментария
+                if (dlknum < response.dislikes) {
+                  $("#dislike"+comment_id).addClass('active');
+                  $("#like"+comment_id).removeClass('active');
+                  $('#dislikes-'+comment_id).text(response.dislikes);
+                  $('#dislikes-'+comment_id).attr("value", response.dislikes)
+                  $('#likes-'+comment_id).text(response.likes);
+                  $('#likes-'+comment_id).attr("value", response.likes)
+                } else {
+                  $("#dislike"+comment_id).removeClass('active');
+                  $('#dislikes-'+comment_id).text(response.dislikes);
+                  $('#dislikes-'+comment_id).attr("value", response.dislikes)
+                  $('#likes-'+comment_id).text(response.likes);
+                  $('#likes-'+comment_id).attr("value", response.likes)
+                }
+              }
+            });
+          });
+        }
+        function deleteReplyBtn(comment_id) {
+          $("#comment_block_item_reply"+comment_id).on("click", "#delete-button"+comment_id, function(){
+            // Находим div комментария, который соответствует данному идентификатору, используя этот уникальный идентификатор
+            let commentDiv = $("#comment_block_item_reply"+comment_id);
+
+            // Инициируем AJAX запрос с помощью jQuery
+            $.ajax({
+              // Тип запроса - POST
+              type: "POST",
+              // URL для запроса берется из data-атрибута кнопки удаления
+              url: "/catalog/delete_comment/"+comment_id+"/",
+              // Данные, которые мы отправляем на сервер. Мы отправляем CSRF токен для защиты от CSRF атак.
+              data: {
+                'csrfmiddlewaretoken': getCookie('csrftoken')
+              },
+              // Функция, которая будет вызвана при успешном ответе сервера
+              success: function(response){
+                // Если сервер успешно обработал запрос, мы удаляем div с комментарием из DOM.
+                commentDiv.remove();
+              }
+            });
+          });
+        }
+      </script>
+  </div>
+{% endblock %}

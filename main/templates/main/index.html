@@ -1,0 +1,523 @@
+{% extends 'main/base.html'%}
+{% load static %}
+
+{% block content %}
+    <!-- Adverts -->
+    <div class="adverts_block">
+      <div class="adverts_block_title">
+        <p>Реклама</p>
+      </div>
+      <div class="custom_car_arrows">
+        <div class="adverts_left_arrow">
+          <img src="{% static 'main/images/assets/icons/arrow-up-car.svg' %}" alt="" />
+        </div>
+        <div class="adverts_right_arrow">
+          <img src="{% static 'main/images/assets/icons/arrow-down-car.svg' %}" alt="" />
+        </div>
+      </div>
+      <div class="adverts_carousel">
+        {% for book in view.adv_show %}
+          <div class="adverts_carousel_item_wrapper">
+            <div class="adverts_carousel_item">
+              <div class="adverts_carousel_item_img">
+                <img src="{{ book.image.url }}" width="317px" heigth="434px" alt="" />
+              </div>
+              <div class="adverts_carousel_item_content">
+                <div class="adverts_carousel_item_name">
+                  <p>"{{ book.title }}"</p>
+                </div>
+                <div class="adverts_carousel_item_description">
+                  <p>
+                    {{ book.description|truncatechars:550 }}
+                  </p>
+                </div>
+                <div class="adverts_carousel_item_rate">
+                  <script>
+
+                    $(document).ready(function() {
+                      var bookId = {{ book.id }}
+                        $.ajax({
+                          url: `{% url "catalog:get_user_rating" %}`,
+                          method: 'GET',
+                          data: {
+                              'book_id': bookId,
+                              'csrfmiddlewaretoken': '{{ csrf_token }}'
+                            },
+                            success: function(data) {
+                              var userRating = data.user_rating;
+
+                              $('p#{{book.id}}.star').each(function(index, star) {
+                                if (index < userRating) {
+                                  $(star).addClass('active');
+                                } else {
+                                  $(star).removeClass('active');
+                                }
+                              });
+                            },
+                            error: function() {
+                              console.error('Ошибка при запросе рейтинга пользователя');
+                            }
+                          });
+                        });
+
+                    $(document).ready(function() {
+                      $('p#{{book.id}}.star').on('click', function() {
+                        var stars = $(this).data('value');
+                        var bookId =  {{ book.id }};
+                        console.log(bookId);
+                        $('p#{{book.id}}.star').each(function(index, star) {
+                          if (index < stars) {
+                            $(star).addClass('active');
+                          } else {
+                            $(star).removeClass('active');
+                          }
+                        });
+
+
+                        $.ajax({
+                          url: '{% url "catalog:rate_book" %}',
+                          method: 'POST',
+                          data: {
+                            'book_id': bookId,
+                            'stars': stars,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                          },
+                          success: function(response) {
+                            let avg_rating = response.avg_rating;
+                            $('p#{{book.id}}.star').each(function(index, star) {
+                              if (index < avg_rating) {
+                                $(star).css('border-color', 'red');
+                              } else {
+                                $(star).css('border-color', 'initial');
+                              }
+                            });
+                          },
+                          error: function(response) {
+                            // обработайте ошибку
+                          }
+                        });
+                      });
+
+                      $('p#{{book.id}}.star').on('mouseover', function() {
+                        var hoverStars = $(this).data('value');
+                        $('p#{{book.id}}.star').each(function(index, star) {
+                          if (index < hoverStars) {
+                            $(star).addClass('hover');
+                          } else {
+                            $(star).removeClass('hover');
+                          }
+                        });
+                      });
+
+                      $('p#{{book.id}}.star').on('mouseout', function() {
+                        $('p#{{book.id}}.star').removeClass('hover');
+                      });
+                    });
+
+                    $(document).ready(function() {
+                      var bookId = {{ book.id }}
+                      $.ajax({
+                        url: `{% url "catalog:get_user_quality" %}`,
+                        method: 'GET',
+                        data: {
+                            'book_id': bookId,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                          },
+                          success: function(data) {
+                            var userQuality= data.user_quality;
+
+                            $('p#{{book.id}}.starb').each(function(index, starb) {
+                              if (index < userQuality) {
+                                $(starb).addClass('active');
+                              } else {
+                                $(starb).removeClass('active');
+                              }
+                            });
+                          },
+                          error: function() {
+                            console.error('Ошибка при запросе рейтинга пользователя');
+                          }
+                        });
+                      });
+
+                    $(document).ready(function() {
+                      $('p#{{book.id}}.starb').on('click', function() {
+                        var starsb = $(this).data('value');
+                        var bookId =  {{ book.id }};
+                        console.log(bookId);
+                        $('p#{{book.id}}.starb').each(function(index, starb) {
+                          if (index < starsb) {
+                            $(starb).addClass('active');
+                          } else {
+                            $(starb).removeClass('active');
+                          }
+                        });
+
+
+                        $.ajax({
+                          url: '{% url "catalog:quality_translation" %}',
+                          method: 'POST',
+                          data: {
+                            'book_id': bookId,
+                            'starsb': starsb,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                          },
+                          success: function(response) {
+                            let avg_quality = response.avg_quality;
+                            $('p#{{book.id}}.starb').each(function(index, starb) {
+                              if (index < avg_quality) {
+                                $(starb).css('border-color', 'red');
+                              } else {
+                                $(starb).css('border-color', 'initial');
+                              }
+                            });
+                          },
+                          error: function(response) {
+                            // обработайте ошибку
+                          }
+                        });
+                      });
+
+                      $('p#{{book.id}}.starb').on('mouseover', function() {
+                        var hoverStarsb = $(this).data('value');
+                        $('p#{{book.id}}.starb').each(function(index, starb) {
+                          if (index < hoverStarsb) {
+                            $(starb).addClass('hover');
+                          } else {
+                            $(starb).removeClass('hover');
+                          }
+                        });
+                      });
+
+                      $('p#{{book.id}}.starb').on('mouseout', function() {
+                        $('p#{{book.id}}.starb').removeClass('hover');
+                      });
+                    });
+
+                  </script>
+                  <div class="rating">
+                    <p>Рейтинг твору</p>
+                    <span>
+                      {% for i in "12345" %}
+                        <p class="star {% if i <= avg_rating %}active{% endif %}" id="{{ book.id }}" data-value="{{ i }}"></p>
+                      {% endfor %}
+                    </span>
+                  </div>
+                  <div class="quality">
+                    <p>Якість перЕкладу</p>
+                    <span>
+                      {% for i in "12345" %}
+                        <p class="starb {% if i <= avg_quality %}active{% endif %}" id="{{ book.id }}" data-value="{{ i }}"></p>
+                      {% endfor %}
+                    </span>
+                  </div>
+                </div>
+                <div class="adverts_save_btn">
+                  <a href="{% url 'catalog:Book_Base' slug=book.slug %}">
+                    <button>Дививитися переклад</button></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+        {% endfor %}
+      </div>
+    </div>
+    <!-- News -->
+    <div class="news_block">
+      <div class="news_block_title">
+        <p>Новинки</p>
+      </div>
+      <div class="custom_car_arrows news_arrows">
+        <div class="news_left_arrow">
+          <img src="{% static 'main/images/assets/icons/arrow-left-car.svg' %}" alt="" />
+        </div>
+        <div class="news_right_arrow">
+          <img src="{% static 'main/images/assets/icons/arrow-right-car.svg' %}" alt="" />
+        </div>
+      </div>
+      <div class="news_block_carousel">
+        {% for book in view.new_books %}
+        <div class="news_block_item">
+          <div class="item_status">
+            <p>NEW</p>
+          </div>
+          <a href="{% url 'catalog:Book_Base' book.slug %}">
+            <img src="{{ book.image.url }}" alt="{{ book.title }}" />
+          </a>
+          <p>{{ book.title }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <!-- Updates -->
+    <div class="updates_block">
+      <div class="updates_block_title">
+        <p>Останні оновлення</p>
+      </div>
+      <div class="updates_block_wrapper">
+        {% for book in view.last_updated_books %}
+        <div class="updates_block_card">
+          <div class="updates_block_card_wrapper">
+            <a href="{% url 'catalog:Book_Base' book.slug %}">
+              <img src="{{ book.image.url }}" alt="{{ book.title }}" />
+            </a>
+            <div>
+              <p>Переклад книги “{{ book.title }}”</p>
+            </div>
+          </div>
+          <div class="updates_block_card_line"></div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <!-- Trends -->
+    <div class="trends_block">
+      <div class="news_block">
+        <div class="news_block_title">
+          <p>Тренди</p>
+        </div>
+        <div class="custom_car_arrows news_arrows">
+          <div class="trends_left_arrow">
+            <img src="{% static 'main/images/assets/icons/arrow-left-car.svg' %}" alt="" />
+          </div>
+          <div class="trends_right_arrow">
+            <img src="{% static 'main/images/assets/icons/arrow-right-car.svg' %}" alt="" />
+          </div>
+        </div>
+        <div class="trends_block_carousel">
+          {% for book in view.trending_books %}
+          <div class="news_block_item">
+            <div class="item_status">
+              <p>NEW</p>
+            </div>
+            <a href="{% url 'catalog:Book_Base' slug=book.slug %}">
+              <img src="{{ book.image.url }}" alt="" />
+            </a>
+            <p>{{ book.title }}</p>
+          </div>
+          {% endfor %}
+          <!-- <div class="news_block_item">
+            <div class="item_status">
+              <p>NEW</p>
+            </div>
+            <img src="{% static 'main/images/assets/images/news.png' %}" alt="" />
+          </div>
+          <div class="news_block_item">
+            <div class="item_status">
+              <p>NEW</p>
+            </div>
+            <img src="{% static 'main/images/assets/images/news.png' %}" alt="" />
+          </div>
+          <div class="news_block_item">
+            <div class="item_status">
+              <p>NEW</p>
+            </div>
+            <img src="{% static 'main/images/assets/images/news.png' %}" alt="" />
+          </div>
+          <div class="news_block_item">
+            <div class="item_status">
+              <p>NEW</p>
+            </div>
+            <img src="{% static 'main/images/assets/images/news.png' %}" alt="" />
+          </div>
+          <div class="news_block_item">
+            <div class="item_status">
+              <p>NEW</p>
+            </div>
+            <img src="{% static 'main/images/assets/images/news.png' %}" alt="" />
+          </div>
+        </div> -->
+      </div>
+    </div>
+    </div>
+    <!-- Recomendations -->
+    <div class="recomendations_block">
+      <div class="recomendations_block_wrapper">
+        <div class="recomendations_block_title">
+          <p>Рекомендації</p>
+        </div>
+        <div class="recomendations_block_content">
+          <div class="recomendations_block_menu">
+            <div class="datelink active_tab" id="day" onclick="openDateTab(event, 'dayTab')">
+              <input type="hidden" id="input_day" value="1">
+              <p>Топ дня</p>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M9 18L15 12L9 6" stroke="white" />
+              </svg>
+            </div>
+            <div class="datelink" id="week" onclick="openDateTab(event, 'weekTab')">
+              <input type="hidden" id="input_top" value="7">
+              <p>Топ тижня</p>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M9 18L15 12L9 6" stroke="white" />
+              </svg>
+            </div>
+            <div class="datelink" id="month" onclick="openDateTab(event, 'monthTab')">
+              <input type="hidden" id="input_top" value="30">
+              <p>Топ місяця</p>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M9 18L15 12L9 6" stroke="white" />
+              </svg>
+            </div>
+            <div class="datelink" id="general_top" onclick="openDateTab(event, 'generalTab')">
+              <p>Загальний Топ 15</p>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M9 18L15 12L9 6" stroke="white" />
+              </svg>
+            </div>
+          </div>
+          <div class="recomendation_block_items">
+            <div class="custom_car_arrows recomendation_arrows" id="day_arrows" style="display:flex">
+              <div class="day_left_arrow">
+                <img src="{% static 'main/images/assets/icons/arrow-left-car.svg' %}" alt="" />
+              </div>
+              <div class="day_right_arrow">
+                <img src="{% static 'main/images/assets/icons/arrow-right-car.svg' %}" alt="" />
+              </div>
+            </div>
+            <div class="custom_car_arrows recomendation_arrows" id="week_arrows" style="display:none">
+              <div class="week_left_arrow">
+                <img src="{% static 'main/images/assets/icons/arrow-left-car.svg' %}" alt="" />
+              </div>
+              <div class="week_right_arrow">
+                <img src="{% static 'main/images/assets/icons/arrow-right-car.svg' %}" alt="" />
+              </div>
+            </div>
+            <div class="custom_car_arrows recomendation_arrows" id="month_arrows" style="display:none">
+              <div class="month_left_arrow">
+                <img src="{% static 'main/images/assets/icons/arrow-left-car.svg' %}" alt="" />
+              </div>
+              <div class="month_right_arrow">
+                <img src="{% static 'main/images/assets/icons/arrow-right-car.svg' %}" alt="" />
+              </div>
+            </div>
+            <div class="custom_car_arrows recomendation_arrows" id="gen_arrows" style="display:none">
+              <div class="gen_left_arrow">
+                <img src="{% static 'main/images/assets/icons/arrow-left-car.svg' %}" alt="" />
+              </div>
+              <div class="gen_right_arrow">
+                <img src="{% static 'main/images/assets/icons/arrow-right-car.svg' %}" alt="" />
+              </div>
+            </div>
+            <div class="rec_block_carousel day" id="dayTab" style="display:block">
+              {% for book in view.top_day_books %}
+              <div class="news_block_item">
+                <div class="item_status">
+                  <p>NEW</p>
+                </div>
+                <a href="{% url 'catalog:Book_Base' slug=book.slug %}">
+                  <img src="{{ book.image.url }}" alt="{{ book.title }}"/>
+                </a>
+                <p>{{ book.title }}</p>
+              </div>
+              {% endfor %}
+            </div>
+            <div class="rec_block_carousel week" id="weekTab" style="display:none">
+              {% for book in view.top_week_books %}
+              <div class="news_block_item">
+                <div class="item_status">
+                  <p>NEW</p>
+                </div>
+                <a href="{% url 'catalog:Book_Base' slug=book.slug %}">
+                  <img src="{{ book.image.url }}" alt="{{ book.title }}" />
+                </a>
+                <p>{{ book.title }}</p>
+              </div>
+              {% endfor %}
+              <div class="custom_car_arrows recomendation_arrows">
+                <div class="rec_left_arrow">
+                  <img src="{% static 'main/images/assets/icons/arrow-left-car.svg' %}" alt="" />
+                </div>
+                <div class="rec_right_arrow">
+                  <img src="{% static 'main/images/assets/icons/arrow-right-car.svg' %}" alt="" />
+                </div>
+              </div>
+            </div>
+            <div class="rec_block_carousel month" id="monthTab" style="display:none">
+              {% for book in view.top_month_books %}
+              <div class="news_block_item">
+                <div class="item_status">
+                  <p>NEW</p>
+                </div>
+                <a href="{% url 'catalog:Book_Base' slug=book.slug %}">
+                  <img src="{{ book.image.url }}" alt="{{ book.title }}"/>
+                </a>
+                <p>{{ book.title }}</p>
+              </div>
+              {% endfor %}
+              <div class="custom_car_arrows recomendation_arrows">
+                <div class="rec_left_arrow">
+                  <img src="{% static 'main/images/assets/icons/arrow-left-car.svg' %}" alt="" />
+                </div>
+                <div class="rec_right_arrow">
+                  <img src="{% static 'main/images/assets/icons/arrow-right-car.svg' %}" alt="" />
+                </div>
+              </div>
+            </div>
+            <div class="rec_block_carousel general" id="generalTab" style="display:none">
+              {% for book in view.top_general_books %}
+              <div class="news_block_item">
+                <div class="item_status">
+                  <p>NEW</p>
+                </div>
+                <a href="{% url 'catalog:Book_Base' slug=book.slug %}">
+                  <img src="{{ book.image.url }}" alt="{{ book.title }}" />
+                </a>
+                <p>{{ book.title }}</p>
+              </div>
+              {% endfor %}
+              <div class="custom_car_arrows recomendation_arrows">
+                <div class="rec_left_arrow">
+                  <img src="{% static 'main/images/assets/icons/arrow-left-car.svg' %}" alt="" />
+                </div>
+                <div class="rec_right_arrow">
+                  <img src="{% static 'main/images/assets/icons/arrow-right-car.svg' %}" alt="" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <script>
+          </script>
+        </div>
+      </div>
+    </div>
+    <!-- Attention block -->
+    <div class="attention_block">
+      <h3>Вітаємо!</h3>
+      <p>
+        Ласкаво просимо в систему перекладів «UA Translate». Цей сайт
+        призначений для професійних та любительських перекладів будь-яких
+        новелів, фанфіків, ранобе з різних мов, а також публікацій авторських
+        творів. Ваші улюблені ранобе, новели та багато іншого на українській
+        мові!
+      </p>
+      <h3>Як це все відбувається?</h3>
+      <p>
+        До ваших послуг: коментування перекладів та їх фрагментів,
+        різноманітна статистика. Також ви можете оцінювати як саму роботу, так
+        і якість перекладу. При бажанні ви можете купити у перекладача/автора
+        розділи за які встановлення ціна, тим самим допомагаючи та мотивуючи
+        автора/перекладача.
+      </p>
+      <h3>
+        Хочете бути перекладачем? Заробіть на перекладі улюбленого твору! Як
+        це працює? все Просто!
+      </h3>
+      <p>
+        Після реєстрації, подаєте заявку на схвалення перекладу (Кнопка:
+        Створити переклад). Після схвалення модератором публікуєте розділи
+        перекладу, зробленого вами з іншої мови.
+      </p>
+      <p>
+        Перекладач створює переклад, публікує, та встановлює розділи або
+        публічного доступу, або платними, доступними за підпискою, які можуть
+        придбати нетерплячі користувачі! Перекладач може сам встановити ціну
+        на кожен проект (або взагалі виставити безкоштовно), що
+        перекладається. Це гарна мотивація для перекладача, а також швидкий
+        переклад для читачів! Звичайно платно робити не обов’язково, це все на
+        ваш вибір!
+      </p>
+      <h3>не можете розібратися?</h3>
+      <a href="{% url 'main:faq' %}">FAQ</a>
+    </div>
+{% endblock %}

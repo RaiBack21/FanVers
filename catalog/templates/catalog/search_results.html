@@ -1,0 +1,20 @@
+{% extends 'main/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div id="search-results">
+    <ul>
+      {% for book in view.get_queryset %}
+        <li>
+            <a href="{%  url 'catalog:Book_Base' slug=book.slug %}">
+              <img src="media\logo.png" alt="Обложка книги">
+            </a>
+            <h2><a href="{%  url 'catalog:Book_Base' slug=book.slug %}">{{ book.title }}</a></h2>
+            <p>{{ book.author }}</p>
+            <p>{{ book.description }}</p>
+        </li>
+      {% endfor %}
+    </ul>
+</div>
+{% endblock %}

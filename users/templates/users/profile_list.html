@@ -1,0 +1,13 @@
+{% extends 'main/base.html'%}
+{% block content %}
+  <h1>Список профилей</h1>
+  <ul>
+    {% for profile in profiles %}
+      <li>
+        <a href="{% url 'users:other_profile_detail' username=profile.user.username %}">
+          {{ profile.user.username }}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

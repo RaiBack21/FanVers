@@ -1,0 +1,36 @@
+<div class="modal-content">
+    <h2>Register</h2>
+    <form id="signup-form" method="post" action="{% url 'users:signup_modal' %}">
+        {% csrf_token %}
+
+        <!-- Добавляем скрытое поле с именем 'next' и значением '{{ page }}' -->
+        <input type="hidden" name="next" value="{{ page }}">
+
+        <div class="mb-3 mt-md-4">
+            <p class="mb-5 text-center">Вітаємо на сайті!!!</p>
+            <div class="form-floating mb-3">
+                {{ form.username.label_tag }}
+                {{ form.username }}
+            </div>
+            <div class="form-floating mb-3">
+                {{ form.email.label_tag }}
+                {{ form.email }}
+            </div>
+            <div class="form-floating mb-3">
+                {{ form.password1.label_tag }}
+                {{ form.password1 }}
+            </div>
+
+            <div class="col-12 d-grid">
+                <button class="btn btn-primary rounded-pill" type="submit">Створити акаунт</button>
+            </div>
+        </div>
+        <div>
+            <p class="mb-0 text-center">
+                Вже маєте акаунт?
+                <a href="{% url 'users:login_modal' %}" class="text-primary fw-bold">Увійдіть на сайт</a>
+            </p>
+        </div>
+        <button id="close-register">Закрыть</button>
+    </form>
+</div>

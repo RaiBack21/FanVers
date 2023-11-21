@@ -1,0 +1,1468 @@
+{% extends 'main/base.html'%}
+{% load static %}
+
+{% block content %}
+    <div class="page_wrapper main_page">
+
+      <div class="main_content_wrapper">
+        <div class="page_navigation">
+          <a href="{% url 'main:home' %}"><p>Головна</p></a>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 18 18"
+            fill="none"
+          >
+            <path d="M6.75 4.5L11.25 9L6.75 13.5" stroke="white" />
+          </svg>
+          <a href="{% url 'catalog:search' %}"><p>Пошук</p></a>
+        </div>
+        <div class="main_page_title">
+          <h2>Пошук</h2>
+        </div>
+
+        <div class="catalogue_content">
+          <div class="catalogue_left">
+            <form action="{% url 'catalog:search_results' %}" method="get">
+              <div class="cat_search">
+                <input type="text" placeholder="Пошук" name="q" />
+                <button class="cat_search_btn" type="submit">
+                  <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                    <circle cx="11" cy="11" r="6" stroke="white" />
+                    <path d="M20 20L17 17" stroke="white" stroke-linecap="round" />
+                  </svg>
+                </button>
+              </div>
+            </form>
+            <div class="cat_sort translator_top_actions main_bb">
+              <p>Показано {{ view.get_queryset.count }} робіт</p>
+              <div class="translator_filter">
+                <span>Сортувати за</span>
+                <select name="" id="">
+                  <option value="">назвою</option>
+                  <option value="">датою створення</option>
+                  <option value="">датою оновлення</option>
+                  <option value="">рейтингами</option>
+                  <option value="">переглядами</option>
+                  <option value="">кількістю лайків</option>
+                  <option value="">кількістю безкоштовних сторінок</option>
+                  <option value="">кількістю сторінок</option>
+                  <option value="">кількістю розділів</option>
+                  <option value="">кількістю в закладках</option>
+                </select>
+              </div>
+            </div>
+            <div class="cat_cards">
+              {% for book in view.get_queryset %}
+              <div class="cat_card">
+                <a href="{% url 'catalog:Book_Base' slug=book.slug %}">
+                  <img src="{% static 'catalog/images/assets/images/harry.png' %}" alt="" />
+                </a>
+                <div class="cat_card_desc">
+                  <div>
+                    <p>Статус:</p>
+                    <p>{{ book.status }}</p>
+                  </div>
+                  <div>
+                    <p>Фендом:</p>
+                    {% for fandom in book.fandoms.all %}
+                    <p>{{ fandom.name }}</p>
+                    {% endfor %}
+                  </div>
+                  <div>
+                    <p>Теги:</p>
+                    {% for tag in book.tags.all %}
+                    <p>{{ tag.name }}</p>
+                    {% endfor %}
+                  </div>
+                  <div>
+                    <p>Жанри:</p>
+                    {% for genre in book.genres.all %}
+                    <p>{{ genre.name }}</p>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+              <!-- <div class="cat_card">
+                <img src="{% static 'catalog/images/assets/images/harry.png' %}" alt="" />
+                <div class="cat_card_desc">
+                  <div>
+                    <p>Статус:</p>
+                    <p>Перекладається</p>
+                  </div>
+                  <div>
+                    <p>Фендом:</p>
+                    <p>Наруто</p>
+                  </div>
+                  <div>
+                    <p>Теги:</p>
+                    <p>Пригоди</p>
+                  </div>
+                  <div>
+                    <p>Жанри:</p>
+                    <p>Пригоди</p>
+                  </div>
+                </div>
+              </div>
+              <div class="cat_card">
+                <img src="{% static 'catalog/images/assets/images/harry.png' %}" alt="" />
+                <div class="cat_card_desc">
+                  <div>
+                    <p>Статус:</p>
+                    <p>Перекладається</p>
+                  </div>
+                  <div>
+                    <p>Фендом:</p>
+                    <p>Наруто</p>
+                  </div>
+                  <div>
+                    <p>Теги:</p>
+                    <p>Пригоди</p>
+                  </div>
+                  <div>
+                    <p>Жанри:</p>
+                    <p>Пригоди</p>
+                  </div>
+                </div>
+              </div>
+              <div class="cat_card">
+                <img src="{% static 'catalog/images/assets/images/harry.png' %}" alt="" />
+                <div class="cat_card_desc">
+                  <div>
+                    <p>Статус:</p>
+                    <p>Перекладається</p>
+                  </div>
+                  <div>
+                    <p>Фендом:</p>
+                    <p>Наруто</p>
+                  </div>
+                  <div>
+                    <p>Теги:</p>
+                    <p>Пригоди</p>
+                  </div>
+                  <div>
+                    <p>Жанри:</p>
+                    <p>Пригоди</p>
+                  </div>
+                </div>
+              </div>
+              <div class="cat_card">
+                <img src="{% static 'catalog/images/assets/images/harry.png' %}" alt="" />
+                <div class="cat_card_desc">
+                  <div>
+                    <p>Статус:</p>
+                    <p>Перекладається</p>
+                  </div>
+                  <div>
+                    <p>Фендом:</p>
+                    <p>Наруто</p>
+                  </div>
+                  <div>
+                    <p>Теги:</p>
+                    <p>Пригоди</p>
+                  </div>
+                  <div>
+                    <p>Жанри:</p>
+                    <p>Пригоди</p>
+                  </div>
+                </div>
+              </div>
+              <div class="cat_card">
+                <img src="{% static 'catalog/images/assets/images/harry.png' %}" alt="" />
+                <div class="cat_card_desc">
+                  <div>
+                    <p>Статус:</p>
+                    <p>Перекладається</p>
+                  </div>
+                  <div>
+                    <p>Фендом:</p>
+                    <p>Наруто</p>
+                  </div>
+                  <div>
+                    <p>Теги:</p>
+                    <p>Пригоди</p>
+                  </div>
+                  <div>
+                    <p>Жанри:</p>
+                    <p>Пригоди</p>
+                  </div>
+                </div>
+              </div>
+              <div class="cat_card">
+                <img src="{% static 'catalog/images/assets/images/harry.png' %}" alt="" />
+                <div class="cat_card_desc">
+                  <div>
+                    <p>Статус:</p>
+                    <p>Перекладається</p>
+                  </div>
+                  <div>
+                    <p>Фендом:</p>
+                    <p>Наруто</p>
+                  </div>
+                  <div>
+                    <p>Теги:</p>
+                    <p>Пригоди</p>
+                  </div>
+                  <div>
+                    <p>Жанри:</p>
+                    <p>Пригоди</p>
+                  </div>
+                </div>
+              </div>
+              <div class="cat_card">
+                <img src="{% static 'catalog/images/assets/images/harry.png' %}" alt="" />
+                <div class="cat_card_desc">
+                  <div>
+                    <p>Статус:</p>
+                    <p>Перекладається</p>
+                  </div>
+                  <div>
+                    <p>Фендом:</p>
+                    <p>Наруто</p>
+                  </div>
+                  <div>
+                    <p>Теги:</p>
+                    <p>Пригоди</p>
+                  </div>
+                  <div>
+                    <p>Жанри:</p>
+                    <p>Пригоди</p>
+                  </div>
+                </div>
+              </div>
+              <div class="cat_card">
+                <img src="{% static 'catalog/images/assets/images/harry.png' %}" alt="" />
+                <div class="cat_card_desc">
+                  <div>
+                    <p>Статус:</p>
+                    <p>Перекладається</p>
+                  </div>
+                  <div>
+                    <p>Фендом:</p>
+                    <p>Наруто</p>
+                  </div>
+                  <div>
+                    <p>Теги:</p>
+                    <p>Пригоди</p>
+                  </div>
+                  <div>
+                    <p>Жанри:</p>
+                    <p>Пригоди</p>
+                  </div>
+                </div>
+              </div>
+              <div class="cat_card">
+                <img src="{% static 'catalog/images/assets/images/harry.png' %}" alt="" />
+                <div class="cat_card_desc">
+                  <div>
+                    <p>Статус:</p>
+                    <p>Перекладається</p>
+                  </div>
+                  <div>
+                    <p>Фендом:</p>
+                    <p>Наруто</p>
+                  </div>
+                  <div>
+                    <p>Теги:</p>
+                    <p>Пригоди</p>
+                  </div>
+                  <div>
+                    <p>Жанри:</p>
+                    <p>Пригоди</p>
+                  </div>
+                </div>
+              </div>
+              <div class="cat_card">
+                <img src="{% static 'catalog/images/assets/images/harry.png' %}" alt="" />
+                <div class="cat_card_desc">
+                  <div>
+                    <p>Статус:</p>
+                    <p>Перекладається</p>
+                  </div>
+                  <div>
+                    <p>Фендом:</p>
+                    <p>Наруто</p>
+                  </div>
+                  <div>
+                    <p>Теги:</p>
+                    <p>Пригоди</p>
+                  </div>
+                  <div>
+                    <p>Жанри:</p>
+                    <p>Пригоди</p>
+                  </div>
+                </div>
+              </div>
+              <div class="cat_card">
+                <img src="{% static 'catalog/images/assets/images/harry.png' %}" alt="" />
+                <div class="cat_card_desc">
+                  <div>
+                    <p>Статус:</p>
+                    <p>Перекладається</p>
+                  </div>
+                  <div>
+                    <p>Фендом:</p>
+                    <p>Наруто</p>
+                  </div>
+                  <div>
+                    <p>Теги:</p>
+                    <p>Пригоди</p>
+                  </div>
+                  <div>
+                    <p>Жанри:</p>
+                    <p>Пригоди</p>
+                  </div>
+                </div>
+              </div> -->
+            </div>
+            <button class="about_book_action show_more">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <path d="M14 15L10 19L14 23" stroke="white" />
+                <path
+                  d="M5.93782 15.5C5.14475 14.1264 4.84171 12.5241 5.07833 10.9557C5.31495 9.38734 6.07722 7.94581 7.24024 6.86729C8.40327 5.78877 9.8981 5.13721 11.4798 5.01935C13.0616 4.90149 14.6365 5.32432 15.9465 6.21856C17.2565 7.1128 18.224 8.42544 18.6905 9.94144C19.1569 11.4574 19.0947 13.0869 18.5139 14.5629C17.9332 16.0389 16.8684 17.2739 15.494 18.0656C14.1196 18.8573 12.517 19.1588 10.9489 18.9206"
+                  stroke="white"
+                  stroke-linecap="round"
+                />
+              </svg>
+              <p>Показати ще</p>
+            </button>
+          </div>
+          <div class="catalogue_right">
+            <h3>Фільтри</h3>
+            <div class="filter_accordions">
+              <div data-ui-tablist class="accordion filter_accordion">
+                <div data-ui-tablist-item class="main_bb">
+                  <button data-ui-tablist-tab class="filter_accordion_tab">
+                    Мова оригіналу
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <path d="M18 9L12 15L6 9" stroke="white" />
+                    </svg>
+                  </button>
+                  <div
+                    data-ui-tablist-tabpanel
+                    data-ui-transition-name="collapse"
+                    hidden
+                  >
+                    <div class="accordion-panel">
+                      <label for="myCheckbox24" class="checkbox">
+                        <input
+                          class="checkbox__input"
+                          type="checkbox"
+                          id="myCheckbox24"
+                        />
+                        <svg
+                          class="checkbox__icon"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 22 22"
+                        >
+                          <rect
+                            width="21"
+                            height="21"
+                            x=".5"
+                            y=".5"
+                            fill="#FFF"
+                            stroke="#006F94"
+                            rx="3"
+                          ></rect>
+                          <path
+                            class="tick"
+                            stroke="#6EA340"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-width="4"
+                            d="M4 10l5 5 9-9"
+                          ></path>
+                        </svg>
+                        <p class="checkbox__label">Англійська</p>
+                      </label>
+                      <label for="myCheckbox25" class="checkbox">
+                        <input
+                          class="checkbox__input"
+                          type="checkbox"
+                          id="myCheckbox25"
+                        />
+                        <svg
+                          class="checkbox__icon"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 22 22"
+                        >
+                          <rect
+                            width="21"
+                            height="21"
+                            x=".5"
+                            y=".5"
+                            fill="#FFF"
+                            stroke="#006F94"
+                            rx="3"
+                          ></rect>
+                          <path
+                            class="tick"
+                            stroke="#6EA340"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-width="4"
+                            d="M4 10l5 5 9-9"
+                          ></path>
+                        </svg>
+                        <p class="checkbox__label">Англійська</p>
+                      </label>
+                      <label for="myCheckbox26" class="checkbox">
+                        <input
+                          class="checkbox__input"
+                          type="checkbox"
+                          id="myCheckbox26"
+                        />
+                        <svg
+                          class="checkbox__icon"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 22 22"
+                        >
+                          <rect
+                            width="21"
+                            height="21"
+                            x=".5"
+                            y=".5"
+                            fill="#FFF"
+                            stroke="#006F94"
+                            rx="3"
+                          ></rect>
+                          <path
+                            class="tick"
+                            stroke="#6EA340"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-width="4"
+                            d="M4 10l5 5 9-9"
+                          ></path>
+                        </svg>
+                        <p class="checkbox__label">Англійська</p>
+                      </label>
+                      <label for="myCheckbox27" class="checkbox">
+                        <input
+                          class="checkbox__input"
+                          type="checkbox"
+                          id="myCheckbox27"
+                        />
+                        <svg
+                          class="checkbox__icon"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 22 22"
+                        >
+                          <rect
+                            width="21"
+                            height="21"
+                            x=".5"
+                            y=".5"
+                            fill="#FFF"
+                            stroke="#006F94"
+                            rx="3"
+                          ></rect>
+                          <path
+                            class="tick"
+                            stroke="#6EA340"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-width="4"
+                            d="M4 10l5 5 9-9"
+                          ></path>
+                        </svg>
+                        <p class="checkbox__label">Англійська</p>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div data-ui-tablist class="accordion filter_accordion">
+                <div data-ui-tablist-item class="main_bb">
+                  <button data-ui-tablist-tab class="filter_accordion_tab">
+                    Обмеження за віком 18+
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <path d="M18 9L12 15L6 9" stroke="white" />
+                    </svg>
+                  </button>
+                  <div
+                    data-ui-tablist-tabpanel
+                    data-ui-transition-name="collapse"
+                    hidden
+                  >
+                    <div class="accordion-panel">
+                      <label for="myCheckbox28" class="checkbox">
+                        <input
+                          class="checkbox__input"
+                          type="checkbox"
+                          id="myCheckbox28"
+                        />
+                        <svg
+                          class="checkbox__icon"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 22 22"
+                        >
+                          <rect
+                            width="21"
+                            height="21"
+                            x=".5"
+                            y=".5"
+                            fill="#FFF"
+                            stroke="#006F94"
+                            rx="3"
+                          ></rect>
+                          <path
+                            class="tick"
+                            stroke="#6EA340"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-width="4"
+                            d="M4 10l5 5 9-9"
+                          ></path>
+                        </svg>
+                        <p class="checkbox__label">Так</p>
+                      </label>
+                      <label for="myCheckbox29" class="checkbox">
+                        <input
+                          class="checkbox__input"
+                          type="checkbox"
+                          id="myCheckbox29"
+                        />
+                        <svg
+                          class="checkbox__icon"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 22 22"
+                        >
+                          <rect
+                            width="21"
+                            height="21"
+                            x=".5"
+                            y=".5"
+                            fill="#FFF"
+                            stroke="#006F94"
+                            rx="3"
+                          ></rect>
+                          <path
+                            class="tick"
+                            stroke="#6EA340"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-width="4"
+                            d="M4 10l5 5 9-9"
+                          ></path>
+                        </svg>
+                        <p class="checkbox__label">Ні</p>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div data-ui-tablist class="accordion filter_accordion">
+                <div data-ui-tablist-item class="main_bb">
+                  <button data-ui-tablist-tab class="filter_accordion_tab">
+                    Тип
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <path d="M18 9L12 15L6 9" stroke="white" />
+                    </svg>
+                  </button>
+                  <div
+                    data-ui-tablist-tabpanel
+                    data-ui-transition-name="collapse"
+                    hidden
+                  >
+                    <div class="accordion-panel">
+                      <label for="myCheckbox31" class="checkbox">
+                        <input
+                          class="checkbox__input"
+                          type="checkbox"
+                          id="myCheckbox31"
+                        />
+                        <svg
+                          class="checkbox__icon"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 22 22"
+                        >
+                          <rect
+                            width="21"
+                            height="21"
+                            x=".5"
+                            y=".5"
+                            fill="#FFF"
+                            stroke="#006F94"
+                            rx="3"
+                          ></rect>
+                          <path
+                            class="tick"
+                            stroke="#6EA340"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-width="4"
+                            d="M4 10l5 5 9-9"
+                          ></path>
+                        </svg>
+                        <p class="checkbox__label">Переклад</p>
+                      </label>
+                      <label for="myCheckbox30" class="checkbox">
+                        <input
+                          class="checkbox__input"
+                          type="checkbox"
+                          id="myCheckbox30"
+                        />
+                        <svg
+                          class="checkbox__icon"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 22 22"
+                        >
+                          <rect
+                            width="21"
+                            height="21"
+                            x=".5"
+                            y=".5"
+                            fill="#FFF"
+                            stroke="#006F94"
+                            rx="3"
+                          ></rect>
+                          <path
+                            class="tick"
+                            stroke="#6EA340"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-width="4"
+                            d="M4 10l5 5 9-9"
+                          ></path>
+                        </svg>
+                        <p class="checkbox__label">Авторське</p>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div data-ui-tablist class="accordion filter_accordion">
+                <div data-ui-tablist-item class="main_bb">
+                  <button data-ui-tablist-tab class="filter_accordion_tab">
+                    Жанри
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <path d="M18 9L12 15L6 9" stroke="white" />
+                    </svg>
+                  </button>
+                  <div
+                    data-ui-tablist-tabpanel
+                    data-ui-transition-name="collapse"
+                    hidden
+                  >
+                    <div class="accordion-panel">
+                      <label for="myCheckbox32" class="checkbox">
+                        <input
+                          class="checkbox__input"
+                          type="checkbox"
+                          id="myCheckbox32"
+                        />
+                        <svg
+                          class="checkbox__icon"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 22 22"
+                        >
+                          <rect
+                            width="21"
+                            height="21"
+                            x=".5"
+                            y=".5"
+                            fill="#FFF"
+                            stroke="#006F94"
+                            rx="3"
+                          ></rect>
+                          <path
+                            class="tick"
+                            stroke="#6EA340"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-width="4"
+                            d="M4 10l5 5 9-9"
+                          ></path>
+                        </svg>
+                        <p class="checkbox__label">Переклад</p>
+                      </label>
+                      <label for="myCheckbox33" class="checkbox">
+                        <input
+                          class="checkbox__input"
+                          type="checkbox"
+                          id="myCheckbox33"
+                        />
+                        <svg
+                          class="checkbox__icon"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 22 22"
+                        >
+                          <rect
+                            width="21"
+                            height="21"
+                            x=".5"
+                            y=".5"
+                            fill="#FFF"
+                            stroke="#006F94"
+                            rx="3"
+                          ></rect>
+                          <path
+                            class="tick"
+                            stroke="#6EA340"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-width="4"
+                            d="M4 10l5 5 9-9"
+                          ></path>
+                        </svg>
+                        <p class="checkbox__label">Авторське</p>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div data-ui-tablist class="accordion filter_accordion">
+                <div data-ui-tablist-item class="main_bb">
+                  <button data-ui-tablist-tab class="filter_accordion_tab">
+                    Теги
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <path d="M18 9L12 15L6 9" stroke="white" />
+                    </svg>
+                  </button>
+                  <div
+                    data-ui-tablist-tabpanel
+                    data-ui-transition-name="collapse"
+                    hidden
+                  >
+                    <div class="accordion-panel">
+                      <div class="filter_item fww">
+                        <button class="tag_btn">#перкалад</button>
+                        <button class="tag_btn">#перкалад</button>
+                        <button class="tag_btn">#перкалад</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div data-ui-tablist class="accordion filter_accordion">
+                <div data-ui-tablist-item class="main_bb">
+                  <button data-ui-tablist-tab class="filter_accordion_tab">
+                    Фендом
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <path d="M18 9L12 15L6 9" stroke="white" />
+                    </svg>
+                  </button>
+                  <div
+                    data-ui-tablist-tabpanel
+                    data-ui-transition-name="collapse"
+                    hidden
+                  >
+                    <div class="accordion-panel">
+                      <label for="myCheckbox35" class="checkbox">
+                        <input
+                          class="checkbox__input"
+                          type="checkbox"
+                          id="myCheckbox35"
+                        />
+                        <svg
+                          class="checkbox__icon"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 22 22"
+                        >
+                          <rect
+                            width="21"
+                            height="21"
+                            x=".5"
+                            y=".5"
+                            fill="#FFF"
+                            stroke="#006F94"
+                            rx="3"
+                          ></rect>
+                          <path
+                            class="tick"
+                            stroke="#6EA340"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-width="4"
+                            d="M4 10l5 5 9-9"
+                          ></path>
+                        </svg>
+                        <p class="checkbox__label">Переклад</p>
+                      </label>
+                      <label for="myCheckbox34" class="checkbox">
+                        <input
+                          class="checkbox__input"
+                          type="checkbox"
+                          id="myCheckbox34"
+                        />
+                        <svg
+                          class="checkbox__icon"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 22 22"
+                        >
+                          <rect
+                            width="21"
+                            height="21"
+                            x=".5"
+                            y=".5"
+                            fill="#FFF"
+                            stroke="#006F94"
+                            rx="3"
+                          ></rect>
+                          <path
+                            class="tick"
+                            stroke="#6EA340"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-width="4"
+                            d="M4 10l5 5 9-9"
+                          ></path>
+                        </svg>
+                        <p class="checkbox__label">Авторське</p>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div data-ui-tablist class="accordion filter_accordion">
+                <div data-ui-tablist-item class="main_bb">
+                  <button data-ui-tablist-tab class="filter_accordion_tab">
+                    Виключити жанри
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <path d="M18 9L12 15L6 9" stroke="white" />
+                    </svg>
+                  </button>
+                  <div
+                    data-ui-tablist-tabpanel
+                    data-ui-transition-name="collapse"
+                    hidden
+                  >
+                    <div class="accordion-panel">
+                      <label for="myCheckbox36" class="checkbox">
+                        <input
+                          class="checkbox__input"
+                          type="checkbox"
+                          id="myCheckbox36"
+                        />
+                        <svg
+                          class="checkbox__icon"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 22 22"
+                        >
+                          <rect
+                            width="21"
+                            height="21"
+                            x=".5"
+                            y=".5"
+                            fill="#FFF"
+                            stroke="#006F94"
+                            rx="3"
+                          ></rect>
+                          <path
+                            class="tick"
+                            stroke="#6EA340"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-width="4"
+                            d="M4 10l5 5 9-9"
+                          ></path>
+                        </svg>
+                        <p class="checkbox__label">Переклад</p>
+                      </label>
+                      <label for="myCheckbox37" class="checkbox">
+                        <input
+                          class="checkbox__input"
+                          type="checkbox"
+                          id="myCheckbox37"
+                        />
+                        <svg
+                          class="checkbox__icon"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 22 22"
+                        >
+                          <rect
+                            width="21"
+                            height="21"
+                            x=".5"
+                            y=".5"
+                            fill="#FFF"
+                            stroke="#006F94"
+                            rx="3"
+                          ></rect>
+                          <path
+                            class="tick"
+                            stroke="#6EA340"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-width="4"
+                            d="M4 10l5 5 9-9"
+                          ></path>
+                        </svg>
+                        <p class="checkbox__label">Авторське</p>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div data-ui-tablist class="accordion filter_accordion">
+                <div data-ui-tablist-item class="main_bb">
+                  <button data-ui-tablist-tab class="filter_accordion_tab">
+                    Виключити теги
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <path d="M18 9L12 15L6 9" stroke="white" />
+                    </svg>
+                  </button>
+                  <div
+                    data-ui-tablist-tabpanel
+                    data-ui-transition-name="collapse"
+                    hidden
+                  >
+                    <div class="accordion-panel">
+                      <label for="myCheckbox38" class="checkbox">
+                        <input
+                          class="checkbox__input"
+                          type="checkbox"
+                          id="myCheckbox38"
+                        />
+                        <svg
+                          class="checkbox__icon"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 22 22"
+                        >
+                          <rect
+                            width="21"
+                            height="21"
+                            x=".5"
+                            y=".5"
+                            fill="#FFF"
+                            stroke="#006F94"
+                            rx="3"
+                          ></rect>
+                          <path
+                            class="tick"
+                            stroke="#6EA340"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-width="4"
+                            d="M4 10l5 5 9-9"
+                          ></path>
+                        </svg>
+                        <p class="checkbox__label">Переклад</p>
+                      </label>
+                      <label for="myCheckbox39" class="checkbox">
+                        <input
+                          class="checkbox__input"
+                          type="checkbox"
+                          id="myCheckbox39"
+                        />
+                        <svg
+                          class="checkbox__icon"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 22 22"
+                        >
+                          <rect
+                            width="21"
+                            height="21"
+                            x=".5"
+                            y=".5"
+                            fill="#FFF"
+                            stroke="#006F94"
+                            rx="3"
+                          ></rect>
+                          <path
+                            class="tick"
+                            stroke="#6EA340"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-width="4"
+                            d="M4 10l5 5 9-9"
+                          ></path>
+                        </svg>
+                        <p class="checkbox__label">Авторське</p>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div data-ui-tablist class="accordion filter_accordion">
+                <div data-ui-tablist-item class="main_bb">
+                  <button data-ui-tablist-tab class="filter_accordion_tab">
+                    Виключити фендоми
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <path d="M18 9L12 15L6 9" stroke="white" />
+                    </svg>
+                  </button>
+                  <div
+                    data-ui-tablist-tabpanel
+                    data-ui-transition-name="collapse"
+                    hidden
+                  >
+                    <div class="accordion-panel">
+                      <label for="myCheckbox40" class="checkbox">
+                        <input
+                          class="checkbox__input"
+                          type="checkbox"
+                          id="myCheckbox40"
+                        />
+                        <svg
+                          class="checkbox__icon"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 22 22"
+                        >
+                          <rect
+                            width="21"
+                            height="21"
+                            x=".5"
+                            y=".5"
+                            fill="#FFF"
+                            stroke="#006F94"
+                            rx="3"
+                          ></rect>
+                          <path
+                            class="tick"
+                            stroke="#6EA340"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-width="4"
+                            d="M4 10l5 5 9-9"
+                          ></path>
+                        </svg>
+                        <p class="checkbox__label">Переклад</p>
+                      </label>
+                      <label for="myCheckbox41" class="checkbox">
+                        <input
+                          class="checkbox__input"
+                          type="checkbox"
+                          id="myCheckbox41"
+                        />
+                        <svg
+                          class="checkbox__icon"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 22 22"
+                        >
+                          <rect
+                            width="21"
+                            height="21"
+                            x=".5"
+                            y=".5"
+                            fill="#FFF"
+                            stroke="#006F94"
+                            rx="3"
+                          ></rect>
+                          <path
+                            class="tick"
+                            stroke="#6EA340"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-width="4"
+                            d="M4 10l5 5 9-9"
+                          ></path>
+                        </svg>
+                        <p class="checkbox__label">Авторське</p>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div data-ui-tablist class="accordion filter_accordion">
+                <div data-ui-tablist-item class="main_bb">
+                  <button data-ui-tablist-tab class="filter_accordion_tab">
+                    Без фендомів
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <path d="M18 9L12 15L6 9" stroke="white" />
+                    </svg>
+                  </button>
+                  <div
+                    data-ui-tablist-tabpanel
+                    data-ui-transition-name="collapse"
+                    hidden
+                  >
+                    <div class="accordion-panel">
+                      <label for="myCheckbox42" class="checkbox">
+                        <input
+                          class="checkbox__input"
+                          type="checkbox"
+                          id="myCheckbox42"
+                        />
+                        <svg
+                          class="checkbox__icon"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 22 22"
+                        >
+                          <rect
+                            width="21"
+                            height="21"
+                            x=".5"
+                            y=".5"
+                            fill="#FFF"
+                            stroke="#006F94"
+                            rx="3"
+                          ></rect>
+                          <path
+                            class="tick"
+                            stroke="#6EA340"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-width="4"
+                            d="M4 10l5 5 9-9"
+                          ></path>
+                        </svg>
+                        <p class="checkbox__label">Переклад</p>
+                      </label>
+                      <label for="myCheckbox43" class="checkbox">
+                        <input
+                          class="checkbox__input"
+                          type="checkbox"
+                          id="myCheckbox43"
+                        />
+                        <svg
+                          class="checkbox__icon"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 22 22"
+                        >
+                          <rect
+                            width="21"
+                            height="21"
+                            x=".5"
+                            y=".5"
+                            fill="#FFF"
+                            stroke="#006F94"
+                            rx="3"
+                          ></rect>
+                          <path
+                            class="tick"
+                            stroke="#6EA340"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-width="4"
+                            d="M4 10l5 5 9-9"
+                          ></path>
+                        </svg>
+                        <p class="checkbox__label">Авторське</p>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div data-ui-tablist class="accordion filter_accordion">
+                <div data-ui-tablist-item class="main_bb">
+                  <button data-ui-tablist-tab class="filter_accordion_tab">
+                    Кількість розділів
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <path d="M18 9L12 15L6 9" stroke="white" />
+                    </svg>
+                  </button>
+                  <div
+                    data-ui-tablist-tabpanel
+                    data-ui-transition-name="collapse"
+                    hidden
+                  >
+                    <div class="accordion-panel">
+                      <div class="filter_item filter_inputs">
+                        <div class="filter_input">
+                          <p>від</p>
+                          <input type="text" />
+                        </div>
+                        <div class="filter_input">
+                          <p>до</p>
+                          <input type="text" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <label for="myCheckbox44" class="checkbox">
+              <input
+                class="checkbox__input"
+                type="checkbox"
+                id="myCheckbox44"
+              />
+              <svg
+                class="checkbox__icon"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 22 22"
+              >
+                <rect
+                  width="21"
+                  height="21"
+                  x=".5"
+                  y=".5"
+                  fill="#FFF"
+                  stroke="#006F94"
+                  rx="3"
+                ></rect>
+                <path
+                  class="tick"
+                  stroke="#6EA340"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-width="4"
+                  d="M4 10l5 5 9-9"
+                ></path>
+              </svg>
+              <p class="checkbox__label">Готові на 100%</p>
+            </label>
+            <label for="myCheckbox45" class="checkbox">
+              <input
+                class="checkbox__input"
+                type="checkbox"
+                id="myCheckbox45"
+              />
+              <svg
+                class="checkbox__icon"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 22 22"
+              >
+                <rect
+                  width="21"
+                  height="21"
+                  x=".5"
+                  y=".5"
+                  fill="#FFF"
+                  stroke="#006F94"
+                  rx="3"
+                ></rect>
+                <path
+                  class="tick"
+                  stroke="#6EA340"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-width="4"
+                  d="M4 10l5 5 9-9"
+                ></path>
+              </svg>
+              <p class="checkbox__label">Доступні для скачування</p>
+            </label>
+            <label for="myCheckbox46" class="checkbox">
+              <input
+                class="checkbox__input"
+                type="checkbox"
+                id="myCheckbox46"
+              />
+              <svg
+                class="checkbox__icon"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 22 22"
+              >
+                <rect
+                  width="21"
+                  height="21"
+                  x=".5"
+                  y=".5"
+                  fill="#FFF"
+                  stroke="#006F94"
+                  rx="3"
+                ></rect>
+                <path
+                  class="tick"
+                  stroke="#6EA340"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-width="4"
+                  d="M4 10l5 5 9-9"
+                ></path>
+              </svg>
+              <p class="checkbox__label">Завершені проекти</p>
+            </label>
+            <label for="myCheckbox47" class="checkbox">
+              <input
+                class="checkbox__input"
+                type="checkbox"
+                id="myCheckbox47"
+              />
+              <svg
+                class="checkbox__icon"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 22 22"
+              >
+                <rect
+                  width="21"
+                  height="21"
+                  x=".5"
+                  y=".5"
+                  fill="#FFF"
+                  stroke="#006F94"
+                  rx="3"
+                ></rect>
+                <path
+                  class="tick"
+                  stroke="#6EA340"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-width="4"
+                  d="M4 10l5 5 9-9"
+                ></path>
+              </svg>
+              <p class="checkbox__label">Розпродаж</p>
+            </label>
+            <label for="myCheckbox48" class="checkbox">
+              <input
+                class="checkbox__input"
+                type="checkbox"
+                id="myCheckbox48"
+              />
+              <svg
+                class="checkbox__icon"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 22 22"
+              >
+                <rect
+                  width="21"
+                  height="21"
+                  x=".5"
+                  y=".5"
+                  fill="#FFF"
+                  stroke="#006F94"
+                  rx="3"
+                ></rect>
+                <path
+                  class="tick"
+                  stroke="#6EA340"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-width="4"
+                  d="M4 10l5 5 9-9"
+                ></path>
+              </svg>
+              <p class="checkbox__label">Тільки непереглянуті</p>
+            </label>
+            <label for="myCheckbox49" class="checkbox">
+              <input
+                class="checkbox__input"
+                type="checkbox"
+                id="myCheckbox49"
+              />
+              <svg
+                class="checkbox__icon"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 22 22"
+              >
+                <rect
+                  width="21"
+                  height="21"
+                  x=".5"
+                  y=".5"
+                  fill="#FFF"
+                  stroke="#006F94"
+                  rx="3"
+                ></rect>
+                <path
+                  class="tick"
+                  stroke="#6EA340"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-width="4"
+                  d="M4 10l5 5 9-9"
+                ></path>
+              </svg>
+              <p class="checkbox__label">Не показувати закладки</p>
+            </label>
+            <label for="myCheckbox50" class="checkbox">
+              <input
+                class="checkbox__input"
+                type="checkbox"
+                id="myCheckbox50"
+              />
+              <svg
+                class="checkbox__icon"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 22 22"
+              >
+                <rect
+                  width="21"
+                  height="21"
+                  x=".5"
+                  y=".5"
+                  fill="#FFF"
+                  stroke="#006F94"
+                  rx="3"
+                ></rect>
+                <path
+                  class="tick"
+                  stroke="#6EA340"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-width="4"
+                  d="M4 10l5 5 9-9"
+                ></path>
+              </svg>
+              <p class="checkbox__label">Тільки онгоінги</p>
+            </label>
+          </div>
+        </div>
+      </div>
+{% endblock %}

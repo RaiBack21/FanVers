@@ -1,0 +1,133 @@
+{% load static %}
+
+
+
+
+
+<div class="login-modal" id="login-modal"  style="z-index:100" xmlns="http://www.w3.org/1999/html">
+    <div class="modal-content">
+        <h2>Login</h2>
+           <form class="SignInModal_modalContainer__oNXTr" id="login-form" method="post" action="{% url 'users:login_modal' %}">
+                {% csrf_token %}
+                        <img id="close-login" alt="close modal"  src="{% static 'main/image/icons/closeIcon.e48e8df6.svg' %}" width="24" height="24" decoding="async" data-nimg="1" class="SignInModal_closeIcon__5eMYF" loading="lazy" style="color: transparent;" />
+                                            <script>
+                                            // Создайте функцию для закрытия модального окна
+                                            function closeModal() {
+                                              // Получите ссылку на модальное окно
+                                              const modal = document.querySelector(".Modal_modal__2Ms_4");
+
+                                              // Скрыть или удалить модальное окно (в зависимости от вашей реализации)
+                                              modal.style.display = "none"; // Пример для скрытия модального окна
+
+                                              // Дополнительные действия для закрытия модального окна, если необходимо
+                                            }
+
+                                            // Получите ссылку на элемент изображения
+                                            const closeIcon = document.getElementById("close-login");
+
+                                            // Добавьте обработчик события клика
+                                            closeIcon.addEventListener("click", function() {
+                                              // Вызовите функцию для закрытия модального окна
+                                              closeModal();
+                                            });
+                                            </script>
+
+                <div class="mb-3 mt-md-4">
+
+                    <p class="mb-5 text-center">З поверненням!</p>
+                    <div class="form-floating mb-3">
+                        {{ form.username.label_tag }}
+                        {{ form.username }}
+                    </div>
+                    <div class="form-floating mb-3">
+                        {{ form.password.label_tag }}
+                        {{ form.password }}
+                    </div>
+                    <div class="SignInModal_forgetPasswordText__wxuUy">Забули пароль?</div>
+                <div>
+                    <p class="mb-0 text-center">
+                        Ще не зареєструвалися??
+                        <a href="{% url 'users:signup_modal' %}" class="text-primary fw-bold">Створіть акаунт</a>
+                    </p>
+                </div>
+
+                <div class="SignInModal_submitBtnContainer__PMCuy" class="col-12 d-grid"><button class="col-12 d-grid"  type="submit">Увійти</button></div>
+                <div class="SignInModal_orDividerContainer__qyGQZ">
+                    <div class="Divider_divider__JVzFi"></div>
+                    <div>або</div>
+                    <div class="Divider_divider__JVzFi"></div>
+                </div>
+                <div class="SignInModal_buttonsContainer__gBknw">
+                    <button class="Button_button__N5rM1" type="button">
+                        <img alt="Facebook icon" src="{% static 'main/image/icons/facebookIcon.a80d0756.svg' %}" width="24" height="24" decoding="async" data-nimg="1" loading="lazy" style="color: transparent;" />Facebook
+                    </button>
+                    <button class="Button_button__N5rM1" type="button">
+                        <img alt="Google icon" src="{% static 'main/image/icons/googleIcon.96cc987b.svg' %}" width="24" height="24" decoding="async" data-nimg="1" loading="lazy" style="color: transparent;" />Google
+                    </button>
+                </div>
+           </form>
+    </div>
+</div>
+
+<script>
+
+</script>
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        console.log('JS code is running');
+        $('#login-form').on('submit', function(e) {
+            e.preventDefault();
+
+            console.log('Request sent to server');
+
+            $.ajax({
+                url: '{% url "users:login_modal" %}',
+                method: 'POST',
+                data: $(this).serialize(),
+                success: function(data) {
+                    console.log(data);
+                    if (data.access) {
+                        // Сохраните токен в локальном хранилище
+                        localStorage.setItem('jwt_token', data.access);
+
+                        // Отправить токен на сервер Python
+                        sendTokenToServer(data.access);
+
+                        // Выведите токен в консоль браузера
+                        console.log('Token:', data.access);
+
+                        // Далее выполните действия после успешной аутентификации
+                        window.location.href = '{% url "main:home" %}';
+                    } else {
+                        // Обработка ошибки аутентификации, если необходимо
+                        console.error('Ошибка аутентификации');
+                    }
+                },
+                error: function() {
+                    console.error('Ошибка при запросе аутентификации');
+                }
+            });
+        });
+
+        // Функция для отправки токена на сервер Python
+        function sendTokenToServer(token) {
+            $.ajax({
+                url: '{% url "users:save_token" %}',
+                method: 'POST',
+                data: { 'token': token },
+                success: function(response) {
+                    console.log('Токен успешно отправлен на сервер');
+                },
+                error: function() {
+                    console.error('Ошибка при отправке токена на сервер');
+                }
+            });
+        }
+    });
+</script>

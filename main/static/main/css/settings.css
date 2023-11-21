@@ -1,0 +1,297 @@
+.user_login {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #5e626c;
+}
+.login_text {
+  color: white;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-left: 20px;
+}
+
+.login_name {
+  color: #fded01;
+  font-family: Inter;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-left: 10px;
+}
+
+
+.user_about_content {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #5e626c;
+}
+.user_about_img img {
+  width: 255px;
+  height: 393px;
+  border-radius: 0px 20px 20px 0px;
+  background: url(<path-to-image>), lightgray 50% / cover no-repeat;
+  box-shadow: -10px 3px 20px 0px rgba(0, 0, 0, 0.8);
+  object-fit: cover;
+}
+.user_about_desc {
+  width: 800px;
+}
+.user_about_desc_item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #5e626c;
+  padding: 12px 0;
+}
+.user_about_desc_item a {
+  display: flex;
+  flex-direction: row-reverse;
+  color: white;
+}
+.user_about_desc_item a:hover {
+  color: #00eafd;
+}
+.user_about_desc_item div:first-child {
+  width: 45%;
+}
+.user_about_desc_item div:last-child {
+  width: 55%;
+}
+.user_about_desc_item:first-child {
+  padding-top: 0;
+}
+.user_about_desc_item div:first-child p {
+  color: #00eafd;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  display: flex;
+  flex-direction: row-reverse;
+  margin-right: 20px;
+}
+.user_about_desc_item div:last-child p {
+  color: #fff;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.user_about_desc_item:last-child {
+  border-bottom: none;
+}
+
+.user_settings {
+  display: flex;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #5e626c;
+}
+.user_settings_other {
+  display: flex;
+}
+.user_settings p {
+  color: white;
+  font-size: 16px;
+}
+.user_settings_btns {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  width: 55%;
+  margin-right: 20px;
+}
+.user_settings_btns a {
+  padding: 5px;
+  font-size: 16px;
+  border-radius: 5px;
+  background: transparent;
+}
+.change_img {
+  color: var(--dark, #fded01);
+  border: 1px solid var(--dark, #fded01);
+}
+.transaction_history {
+  color: var(--dark, orange);
+  border: 1px solid var(--dark, orange);
+}
+.rep_balance {
+  color: var(--dark, #00eafd);
+  border: 1px solid var(--dark, #00eafd);
+}
+.withdraw {
+  color: var(--dark, red);
+  border: 1px solid var(--dark, red);
+}
+.send_sms {
+  color: var(--dark, orange);
+  border: 1px solid var(--dark, orange);
+}
+.user_settings_right {
+  display: block;
+  align-items: center;
+  width: 100%;
+}
+.user_commission {
+  display: flex;
+  padding-left: 100px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #5e626c;
+}
+.user_commission div {
+  margin-right: 40px;
+}
+.user_balance {
+  display: flex;
+  padding-left: 100px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+.user_balance_left {
+  padding-right: 50px;
+  display: flex;
+}
+.user_balance_left div {
+  margin-right: 40px;
+}
+
+
+.settings_content_block {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  padding-top: 20px;
+}
+.settings_content_left,
+.settings_content_right {
+  width: 50%;
+}
+
+.settings_content_left h3,
+.settings_content_right h3 {
+  color: #5e626c;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  width: 40%;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #5e626c;
+}
+.email_change {
+  margin-bottom: 40px;
+  margin-right: 70px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid #5e626c;
+}
+.acc_settings {
+  margin-bottom: 80px;
+}
+
+.password_input {
+  margin-bottom: 20px;
+}
+.password_input p,
+.email_input p {
+  color: #fff;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-bottom: 10px;
+}
+
+.password_input div,
+.email_input div {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 350px;
+}
+.password_input div input,
+.email_input div input {
+  width: 100%;
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: 1px solid #fff;
+  background: transparent;
+  color: #fff;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.password_input div svg {
+  position: absolute;
+  right: 15px;
+  cursor: pointer;
+}
+.save_btn {
+  margin-top: 40px;
+  border-radius: 5px;
+  border: 1px solid var(--dark, #5e626c);
+}
+
+.setting_fonsts {
+  margin-top: 60px;
+}
+.setting_fonsts p {
+  color: #fff;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.font_size p {
+  margin-bottom: 20px;
+}
+.font_color {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.font_color div p:first-child {
+  color: #fff;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-bottom: 10px;
+}
+
+.font_color button p {
+  margin: 0 !important;
+  margin-right: 30px !important;
+}
+
+@media only screen and (max-width: 700px) {
+  .settings_content_block {
+    flex-direction: column;
+    gap: 40px;
+  }
+  .settings_content_left,
+  .settings_content_right {
+    width: 100%;
+  }
+}

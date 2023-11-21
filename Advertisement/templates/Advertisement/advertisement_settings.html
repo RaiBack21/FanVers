@@ -1,0 +1,346 @@
+{% extends 'main/base.html' %}
+
+{% load static %}
+
+
+
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $("input.end_date").change(function() {
+      const start = document.querySelector("#start_date");
+      var start_date = start.value
+      const end = document.querySelector("#end_date");
+      var end_date = end.value
+      const loc = document.querySelector("#location");
+      var location = loc.value
+        $.get("ajax_cost/?start_date="+start_date+"&end_date="+end_date+"&location="+location, function(data) {
+          $("#target, #cost1").html(data);
+          $("#cost1").attr("value", data);
+        });
+      });
+    });
+</script>
+<script>
+  function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+$.ajaxPrefilter(function(options, originalOptions, jqXHR){
+    if (options['type'].toLowerCase() === "post") {
+        jqXHR.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
+    }
+});
+</script>
+
+  <h2>Настройки рекламы для книги "{{ book.title }}"</h2>
+
+  <hr></hr>
+  <h4>Реклама на головній (30 Fancoins/день)</h4>
+  <form action="ajax_cost" method="get">
+    {% csrf_token %}
+    <input type="hidden" id="location" name="location" value="main">
+    <div class="start_date">
+      <label for="start_date">Дата початку реклами:</label>
+      <input type="date" id="start_date" name="start_date" required>
+    </div>
+    <div class="end_date">
+      <label for="end_date">Дата закінчення реклами:</label>
+      <input class="end_date" type="date" id="end_date" name="end_date" required>
+    </div>
+    <a id="test" href="javascript:">Обрати</a>
+  </form>
+  Вартість:<div class="tar" id="target"> {{cost}}</div>
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $("input.end_datec").change(function() {
+        const start = document.querySelector("#start_datec");
+        var start_date = start.value
+        const end = document.querySelector("#end_datec");
+        var end_date = end.value
+        const loc = document.querySelector("#locationc");
+        var location = loc.value
+          $.get("ajax_cost/?start_date="+start_date+"&end_date="+end_date+"&location="+location, function(data) {
+            $("#targetc").html(data);
+            $("#cost2").attr("value", data);
+          });
+        });
+      });
+  </script>
+
+  <meta name="csrf-token" content="{{ csrf_token }}">
+
+  <hr></hr>
+  <h4>Реклама в каталозі (30 Fancoins/день)</h4>
+  <form action="ajax_cost"  method="get">
+    {% csrf_token %}
+    <input type="hidden" id="locationc" name="locationc" value="catalog">
+    <div class="start_datec">
+      <label for="start_datec">Дата початку реклами:</label>
+      <input type="date" id="start_datec" name="start_datec" required>
+    </div>
+    <div class="end_datec">
+      <label for="end_datec">Дата закінчення реклами:</label>
+      <input class="end_datec" type="date" id="end_datec" name="end_datec" required>
+    </div>
+    <a id="catalog" href="javascript:">Обрати</a>
+  </form>
+  Вартість:<div class="tar" id="targetc">{{cost}}</div>
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $("select.gg").click(function() {
+        const start = document.querySelector("#start_dateg");
+        var start_date = start.value
+        const end = document.querySelector("#end_dateg");
+        var end_date = end.value
+        const loc = document.querySelector("#locationg");
+        var location = loc.value
+        const genr = document.querySelector("#genres")
+        var genre = genr.value
+          $.get("ajax_cost/?start_date="+start_date+"&end_date="+end_date+"&location="+location+"&genre="+genre, function(data) {
+            $("#targetg").html(data);
+            $("#cost3").attr("value", data);
+          });
+        });
+      });
+  </script>
+
+  <hr></hr>
+  <h4>Реклама у пошушку за жанрами (15 Fancoins/день)</h4>
+  <form action="ajax_cost" method="get">
+    {% csrf_token %}
+    <input type="hidden" id="locationg" name="locationg" value="genres">
+    <div class="start_dateg">
+      <label for="start_dateg">Дата початку реклами:</label>
+      <input type="date" id="start_dateg" name="start_dateg" value="{{start_date}}"required>
+    </div>
+    <div class="end_dateg">
+      <label for="end_dateg">Дата закінчення реклами:</label>
+      <input class="end_dateg" type="date" id="end_dateg" name="end_dateg" value="{{end_date}}"required>
+    </div>
+    <div class="genre">
+      <label for="genres">Оберіть жанр:</label>
+      <select class="gg" name="genres" id="genres" required>
+        <option value="">---------</option>
+        {% for genre in genres %}
+          <option name="genre" value="{{ genre.id }}">{{ genre.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <a id="genre" href="javascript:">Обрати</a>
+  </form>
+  Вартість:<div class="tar" id="targetg"> {{cost}}</div>
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $("select.tt").click(function() {
+        const start = document.querySelector("#start_datet");
+        var start_date = start.value
+        const end = document.querySelector("#end_datet");
+        var end_date = end.value
+        const loc = document.querySelector("#locationt");
+        var location = loc.value
+        const ta = document.querySelector("#tags")
+        var tag = ta.value
+          $.get("ajax_cost/?start_date="+start_date+"&end_date="+end_date+"&location="+location+"&tag="+tag, function(data) {
+            $("#targett").html(data);
+            $("#cost4").attr("value", data);
+          });
+        });
+      });
+  </script>
+
+  <hr></hr>
+  <h4>Реклама у пошушку за тегами (15 Fancoins/день)</h4>
+  <form action="ajax_cost" method="get">
+    {% csrf_token %}
+    <input type="hidden" id="locationt" name="location" value="tags">
+    <div class="start_datet">
+      <label for="start_date">Дата початку реклами:</label>
+      <input type="date" id="start_datet" name="start_date" required>
+    </div>
+    <div class="end_datet">
+      <label for="end_dateg">Дата закінчення реклами:</label>
+      <input class="end_datet" type="date" id="end_datet" name="end_date" required>
+    </div>
+    <div class="tag">
+      <label for="tags">Оберіть тег:</label>
+      <select class="tt" name="tags" id="tags" required>
+        <option value="">---------</option>
+        {% for tag in tags %}
+          <option name="tag" value="{{ tag.id }}">{{ tag.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <a id="tag" href="javascript:">Обрати</a>
+  </form>
+Вартість:<div class="tar" id="targett">{{cost}}</div>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    $("select.ff").click(function() {
+      const start = document.querySelector("#start_datef");
+      var start_date = start.value
+      const end = document.querySelector("#end_datef");
+      var end_date = end.value
+      const loc = document.querySelector("#locationf");
+      var location = loc.value
+      const fando = document.querySelector("#fandom")
+      var fandom = fando.value
+        $.get("ajax_cost/?start_date="+start_date+"&end_date="+end_date+"&location="+location+"&fandom="+fandom, function(data) {
+          $("#targetf").html(data);
+          $("#cost5").attr("value", data);
+        });
+      });
+    });
+</script>
+
+  <hr></hr>
+  <h4>Реклама у пошушку за фендом (15 Fancoins/день)</h4>
+  <form action="ajax_cost" method="get">
+    {% csrf_token %}
+    <input type="hidden" id="locationf" name="location" value="fandoms">
+    <div class="start_datef">
+      <label for="start_date">Дата початку реклами:</label>
+      <input type="date" id="start_datef" name="start_date" required>
+    </div>
+    <div class="end_datef">
+      <label for="end_date">Дата закінчення реклами:</label>
+      <input class="end_datef" type="date" id="end_datef" name="end_date" required>
+    </div>
+    <div class="fandom">
+      <label for="fandom">Оберіть фендом:</label>
+      <select class="ff" name="fandom" id="fandom" required>
+        <option value="">---------</option>
+        {% for fandom in fandoms %}
+          <option name="fandom" value="{{ fandom.id }}">{{ fandom.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <a id="fandoms" href="javascript:">Обрати</a>
+  </form>
+  Вартість:<div class="tar" id="targetf">{{cost}}</div>
+
+  <p>Загальна вартість:</p>
+  <div id="targetsum"></div>
+      <input type="hidden" id="cost1" value="0">
+      <input type="hidden" id="cost2" value="0">
+      <input type="hidden" id="cost3" value="0">
+      <input type="hidden" id="cost4" value="0">
+      <input type="hidden" id="cost5" value="0">
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $("#test, #catalog, #genre, #tag, #fandoms").click(function() {
+        var cost1 = $("#cost1").attr("value");
+        var cost2 = $("#cost2").attr("value");
+        var cost3 = $("#cost3").attr("value");
+        var cost4 = $("#cost4").attr("value");
+        var cost5 = $("#cost5").attr("value");
+        $.get("ajax_cost_sum/?cost1="+cost1+"&cost2="+cost2+"&cost3="+cost3+"&cost4="+cost4+"&cost5="+cost5, function(data) {
+          $("#targetsum").html(data);
+          $("#targetsum").attr("value", data);
+        })
+      })
+    })
+  </script>
+
+  <button id="save" type="submit" href="book_advertisement_settings">Оплатити</button>
+
+  <script>
+    $(document).ready(function () {
+      $("#save").click(function() {
+        const start = document.querySelector("#start_date");
+        var start_date = start.value
+        const end = document.querySelector("#end_date");
+        var end_date = end.value
+        const loc = document.querySelector("#location");
+        var location = loc.value
+
+        const startc = document.querySelector("#start_datec");
+        var start_datec = startc.value
+        const endc = document.querySelector("#end_datec");
+        var end_datec = endc.value
+        const locc = document.querySelector("#locationc");
+        var locationc = locc.value
+
+        const startg = document.querySelector("#start_dateg");
+        var start_dateg = startg.value
+        const endg = document.querySelector("#end_dateg");
+        var end_dateg = endg.value
+        const locg = document.querySelector("#locationg");
+        var locationg = locg.value
+        const genr = document.querySelector("#genres")
+        var genre = genr.value
+
+        const startt = document.querySelector("#start_datet");
+        var start_datet = startt.value
+        const endt = document.querySelector("#end_datet");
+        var end_datet = endt.value
+        const loct = document.querySelector("#locationt");
+        var locationt = loct.value
+        const ta = document.querySelector("#tags")
+        var tag = ta.value
+
+        const startf = document.querySelector("#start_datef");
+        var start_datef = startf.value
+        const endf = document.querySelector("#end_datef");
+        var end_datef = endf.value
+        const locf = document.querySelector("#locationf");
+        var locationf = locf.value
+        const fando = document.querySelector("#fandom")
+        var fandom = fando.value
+
+        var cost1 = $("#cost1").attr("value");
+        var cost2 = $("#cost2").attr("value");
+        var cost3 = $("#cost3").attr("value");
+        var cost4 = $("#cost4").attr("value");
+        var cost5 = $("#cost5").attr("value");
+
+        var cost = $("#targetsum").attr("value");
+
+        var csrf = $("input[name=csrfmiddlewaretoken]").val()
+
+        // document.location.href = 'http://localhost:8000/Advertisement/book/1/advertisement/';
+        $.post("", {'cost': cost, 'start_date': start_date, 'end_date': end_date,
+         'location': location, 'start_datec': start_datec, 'end_datec': end_datec,
+          'locationc': locationc, 'start_dateg': start_dateg, 'end_dateg': end_dateg,
+           'locationg': locationg, 'genre': genre, 'start_datet': start_datet,
+           'end_datet': end_datet, 'locationt': locationt, 'tag': tag,
+           'start_datef': start_datef, 'end_datef': end_datef,
+           'locationf': locationf, 'fandom': fandom, 'cost1': cost1,
+           'cost2': cost2, 'cost3': cost3, 'cost4': cost4, 'cost5': cost5}, function(data) {
+             $("#message").html(data);
+             // document.location.href = document.location
+        })
+      })
+    })
+  </script>
+
+  {% if messages %}
+      <ul class="messages">
+          {% for message in messages %}
+              <li id="message" class="{{ message.tags }}" >
+                  {{ message|safe }}
+                  <a href="#" class="close">✖</a>
+              </li>
+          {% endfor %}
+      </ul>
+  {% endif %}
+{% endblock %}

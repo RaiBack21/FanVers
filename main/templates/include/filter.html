@@ -1,0 +1,1108 @@
+<div class="catalogue_right" id="filter">
+  <form action="" method="get" name="filter">
+  <h3>Фільтри</h3>
+  <div class="filter_accordions">
+    <!-- <div data-ui-tablist class="accordion filter_accordion">
+      <div data-ui-tablist-item class="main_bb">
+        <button data-ui-tablist-tab class="filter_accordion_tab">
+          Мова оригіналу
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <path d="M18 9L12 15L6 9" stroke="white" />
+          </svg>
+        </button>
+        <div
+          data-ui-tablist-tabpanel
+          data-ui-transition-name="collapse"
+          hidden
+        >
+          <div class="accordion-panel">
+            <label for="myCheckbox24" class="checkbox">
+              <input
+                class="checkbox__input"
+                type="checkbox"
+                id="myCheckbox24"
+              />
+              <svg
+                class="checkbox__icon"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 22 22"
+              >
+                <rect
+                  width="21"
+                  height="21"
+                  x=".5"
+                  y=".5"
+                  fill="#FFF"
+                  stroke="#006F94"
+                  rx="3"
+                ></rect>
+                <path
+                  class="tick"
+                  stroke="#6EA340"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-width="4"
+                  d="M4 10l5 5 9-9"
+                ></path>
+              </svg>
+              <p class="checkbox__label">Англійська</p>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <div data-ui-tablist class="accordion filter_accordion">
+      <div data-ui-tablist-item class="main_bb">
+        <button data-ui-tablist-tab class="filter_accordion_tab">
+          Обмеження за віком 18+
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <path d="M18 9L12 15L6 9" stroke="white" />
+          </svg>
+        </button>
+        <div
+          data-ui-tablist-tabpanel
+          data-ui-transition-name="collapse"
+          hidden
+        >
+          <div class="accordion-panel">
+            <label for="myCheckbox28" class="checkbox">
+              <input
+                class="checkbox__input"
+                type="checkbox"
+                id="myCheckbox28"
+                name="is_adult_yes"
+                value="True"
+              />
+              <svg
+                class="checkbox__icon"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 22 22"
+              >
+                <rect
+                  width="21"
+                  height="21"
+                  x=".5"
+                  y=".5"
+                  fill="#FFF"
+                  stroke="#006F94"
+                  rx="3"
+                ></rect>
+                <path
+                  class="tick"
+                  stroke="#6EA340"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-width="4"
+                  d="M4 10l5 5 9-9"
+                ></path>
+              </svg>
+              <p class="checkbox__label">Так</p>
+            </label>
+            <label for="myCheckbox29" class="checkbox">
+              <input
+                class="checkbox__input"
+                type="checkbox"
+                id="myCheckbox29"
+                name="is_adult_no"
+                value="True"
+              />
+              <svg
+                class="checkbox__icon"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 22 22"
+              >
+                <rect
+                  width="21"
+                  height="21"
+                  x=".5"
+                  y=".5"
+                  fill="#FFF"
+                  stroke="#006F94"
+                  rx="3"
+                ></rect>
+                <path
+                  class="tick"
+                  stroke="#6EA340"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-width="4"
+                  d="M4 10l5 5 9-9"
+                ></path>
+              </svg>
+              <p class="checkbox__label">Ні</p>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div data-ui-tablist class="accordion filter_accordion">
+      <div data-ui-tablist-item class="main_bb">
+        <button data-ui-tablist-tab class="filter_accordion_tab">
+          Тип
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <path d="M18 9L12 15L6 9" stroke="white" />
+          </svg>
+        </button>
+        <div
+          data-ui-tablist-tabpanel
+          data-ui-transition-name="collapse"
+          hidden
+        >
+          <div class="accordion-panel">
+            <label for="myCheckbox31" class="checkbox">
+              <input
+                class="checkbox__input"
+                type="checkbox"
+                id="myCheckbox31"
+              />
+              <svg
+                class="checkbox__icon"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 22 22"
+              >
+                <rect
+                  width="21"
+                  height="21"
+                  x=".5"
+                  y=".5"
+                  fill="#FFF"
+                  stroke="#006F94"
+                  rx="3"
+                ></rect>
+                <path
+                  class="tick"
+                  stroke="#6EA340"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-width="4"
+                  d="M4 10l5 5 9-9"
+                ></path>
+              </svg>
+              <p class="checkbox__label">Переклад</p>
+            </label>
+            <label for="myCheckbox30" class="checkbox">
+              <input
+                class="checkbox__input"
+                type="checkbox"
+                id="myCheckbox30"
+              />
+              <svg
+                class="checkbox__icon"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 22 22"
+              >
+                <rect
+                  width="21"
+                  height="21"
+                  x=".5"
+                  y=".5"
+                  fill="#FFF"
+                  stroke="#006F94"
+                  rx="3"
+                ></rect>
+                <path
+                  class="tick"
+                  stroke="#6EA340"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-width="4"
+                  d="M4 10l5 5 9-9"
+                ></path>
+              </svg>
+              <p class="checkbox__label">Авторське</p>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <div data-ui-tablist class="accordion filter_accordion">
+    <div data-ui-tablist-item class="main_bb">
+        <button data-ui-tablist-tab class="filter_accordion_tab">
+          Жанри
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <path d="M18 9L12 15L6 9" stroke="white" />
+          </svg>
+        </button>
+        <div
+          data-ui-tablist-tabpanel
+          data-ui-transition-name="collapse"
+          hidden
+        >
+          <div class="accordion-panel">
+            <div class="filter_item fww">
+
+            {% for genre in genres %}
+            <label for="g{{genre.id}}" class="tag_lbl">
+              <input
+                class="tag_btn"
+                id="g{{genre.id}}"
+                type="checkbox"
+                value="{{genre.id}}"
+                name="genres" hidden>
+              <p class="tag_p">{{ genre.name }}</p>
+            </label>
+            {% endfor %}
+
+            <!-- {% if genres.count > 2 %}
+            <div class="multiselect">
+              <div class="selectBox" onclick="showCheckboxes()">
+                <select>
+                  <option>Виберіть жанр</option>
+                </select>
+                <div class="overSelect"></div>
+              </div>
+              <div id="checkboxes">
+                {% for genre in genres|slice:"2:" %}
+                <label for="myCheckboxg{{genre.id}}">
+                  <input
+                    type="checkbox"
+                    class="checkbox__input"
+                    id="myCheckboxg{{genre.id}}"
+                    value="{{genre.id}}"
+                    name="genres"
+                  />
+                  <svg
+                    class="checkbox__icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 22 22"
+                  >
+                    <rect
+                      width="21"
+                      height="21"
+                      x=".5"
+                      y=".5"
+                      fill="#FFF"
+                      stroke="#006F94"
+                      rx="3"
+                    ></rect>
+                    <path
+                      class="tick"
+                      stroke="#6EA340"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-width="4"
+                      d="M4 10l5 5 9-9"
+                    ></path>
+                  </svg>
+                  <p class="checkbox__label">{{ genre.name }}</p>
+                </label>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %} -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div data-ui-tablist class="accordion filter_accordion">
+      <div data-ui-tablist-item class="main_bb">
+        <button data-ui-tablist-tab class="filter_accordion_tab">
+          Теги
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <path d="M18 9L12 15L6 9" stroke="white" />
+          </svg>
+        </button>
+        <div
+          data-ui-tablist-tabpanel
+          data-ui-transition-name="collapse"
+          hidden
+        >
+          <div class="accordion-panel">
+            <div class="filter_item fww">
+
+            {% for tag in tags %}
+            <label for="t{{tag.id}}" class="tag_lbl">
+              <input
+                class="tag_btn"
+                id="t{{tag.id}}"
+                type="checkbox"
+                value="{{tag.id}}"
+                name="tags" hidden>
+              <p class="tag_p">#{{ tag.name }}</p>
+            </label>
+            {% endfor %}
+
+          <!-- {% if tags.count > 2 %}
+          <div class="multiselect">
+            <div class="selectBox" onclick="showCheckboxesT()">
+              <select>
+                <option>Виберіть тег</option>
+              </select>
+              <div class="overSelect"></div>
+            </div>
+            <div id="checkboxes_tag">
+              {% for tag in tags|slice:"2:" %}
+              <label for="myCheckboxt{{tag.id}}">
+                <input
+                  type="checkbox"
+                  class="checkbox__input"
+                  id="myCheckboxt{{tag.id}}"
+                  value="{{tag.id}}"
+                  name="tags"
+                />
+                <svg
+                  class="checkbox__icon"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 22 22"
+                >
+                  <rect
+                    width="21"
+                    height="21"
+                    x=".5"
+                    y=".5"
+                    fill="#FFF"
+                    stroke="#006F94"
+                    rx="3"
+                  ></rect>
+                  <path
+                    class="tick"
+                    stroke="#6EA340"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-width="4"
+                    d="M4 10l5 5 9-9"
+                  ></path>
+                </svg>
+                <p class="checkbox__label">{{ tag.name }}</p>
+              </label>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %} -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div data-ui-tablist class="accordion filter_accordion">
+      <div data-ui-tablist-item class="main_bb">
+        <button data-ui-tablist-tab class="filter_accordion_tab">
+          Фендом
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <path d="M18 9L12 15L6 9" stroke="white" />
+          </svg>
+        </button>
+        <div
+          data-ui-tablist-tabpanel
+          data-ui-transition-name="collapse"
+          hidden
+        >
+          <div class="accordion-panel">
+            <div class="filter_item fww">
+
+              {% for fandom in fandoms %}
+              <label for="f{{fandom.id}}" class="tag_lbl">
+                <input
+                  class="tag_btn"
+                  id="f{{fandom.id}}"
+                  type="checkbox"
+                  value="{{fandom.id}}"
+                  name="fandoms" hidden>
+                  <p class="tag_p">{{ fandom.name }}</p>
+                </label>
+              {% endfor %}
+
+            <!-- {% if fandoms.count > 2 %}
+            <div class="multiselect">
+              <div class="selectBox" onclick="showCheckboxesF()">
+                <select>
+                  <option>Виберіть фендом</option>
+                </select>
+                <div class="overSelect"></div>
+              </div>
+              <div id="checkboxes_fandom">
+                {% for fandom in fandoms|slice:"2:" %}
+                <label for="myCheckboxf{{fandom.id}}">
+                  <input
+                    type="checkbox"
+                    class="checkbox__input"
+                    id="myCheckboxf{{fandom.id}}"
+                    value="{{fandom.id}}"
+                    name="fandoms"
+                  />
+                  <svg
+                    class="checkbox__icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 22 22"
+                  >
+                    <rect
+                      width="21"
+                      height="21"
+                      x=".5"
+                      y=".5"
+                      fill="#FFF"
+                      stroke="#006F94"
+                      rx="3"
+                    ></rect>
+                    <path
+                      class="tick"
+                      stroke="#6EA340"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-width="4"
+                      d="M4 10l5 5 9-9"
+                    ></path>
+                  </svg>
+                  <p class="checkbox__label">{{ fandom.name }}</p>
+                </label>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %} -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div data-ui-tablist class="accordion filter_accordion">
+      <div data-ui-tablist-item class="main_bb">
+        <button data-ui-tablist-tab class="filter_accordion_tab">
+          Виключити жанри
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <path d="M18 9L12 15L6 9" stroke="white" />
+          </svg>
+        </button>
+        <div
+          data-ui-tablist-tabpanel
+          data-ui-transition-name="collapse"
+          hidden
+        >
+          <div class="accordion-panel">
+            <div class="filter_item fww">
+
+            {% for genre in genres %}
+            <label for="{{genre.id}}g" class="tag_lbl">
+            <input
+              class="tag_btn"
+              id="{{genre.id}}g"
+              type="checkbox"
+              value="{{genre.id}}"
+              name="ex_genres" hidden>
+              <p class="tag_ex_p">{{ genre.name }}</p>
+            </label>
+            {% endfor %}
+
+            <!-- {% if genres.count > 2 %}
+            <div class="multiselect">
+              <div class="selectBox" onclick="showCheckboxesExG()">
+                <select>
+                  <option>Виберіть жанр</option>
+                </select>
+                <div class="overSelect"></div>
+              </div>
+              <div id="checkboxes_ex_genre">
+                {% for genre in genres|slice:"2:" %}
+                <label for="myCheckbox{{genre.id}}g">
+                  <input
+                    type="checkbox"
+                    class="checkbox__input"
+                    id="myCheckbox{{genre.id}}g"
+                    value="{{genre.id}}"
+                    name="ex_genres"
+                  />
+                  <svg
+                    class="checkbox__icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 22 22"
+                  >
+                    <rect
+                      width="21"
+                      height="21"
+                      x=".5"
+                      y=".5"
+                      fill="#FFF"
+                      stroke="#006F94"
+                      rx="3"
+                    ></rect>
+                    <path
+                      class="tick"
+                      stroke="#6EA340"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-width="4"
+                      d="M4 10l5 5 9-9"
+                    ></path>
+                  </svg>
+                  <p class="checkbox__label">{{ genre.name }}</p>
+                </label>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %} -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div data-ui-tablist class="accordion filter_accordion">
+      <div data-ui-tablist-item class="main_bb">
+        <button data-ui-tablist-tab class="filter_accordion_tab">
+          Виключити теги
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <path d="M18 9L12 15L6 9" stroke="white" />
+          </svg>
+        </button>
+        <div
+          data-ui-tablist-tabpanel
+          data-ui-transition-name="collapse"
+          hidden
+        >
+          <div class="accordion-panel">
+            <div class="filter_item fww">
+
+            {% for tag in tags %}
+            <label for="{{tag.id}}t" class="tag_lbl">
+            <input
+              class="tag_btn"
+              id="{{tag.id}}t"
+              type="checkbox"
+              value="{{tag.id}}"
+              name="ex_tags" hidden>
+              <p class="tag_ex_p">#{{ tag.name }}</p>
+              </label>
+            {% endfor %}
+
+            <!-- {% if tags.count > 2 %}
+            <div class="multiselect">
+              <div class="selectBox" onclick="showCheckboxesExT()">
+                <select>
+                  <option>Виберіть тег</option>
+                </select>
+                <div class="overSelect"></div>
+              </div>
+              <div id="checkboxes_ex_tag">
+                {% for tag in tags|slice:"2:" %}
+                <label for="myCheckbox{{tag.id}}t">
+                  <input
+                    type="checkbox"
+                    class="checkbox__input"
+                    id="myCheckbox{{tag.id}}t"
+                    value="{{tag.id}}"
+                    name="ex_tags"
+                  />
+                  <svg
+                    class="checkbox__icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 22 22"
+                  >
+                    <rect
+                      width="21"
+                      height="21"
+                      x=".5"
+                      y=".5"
+                      fill="#FFF"
+                      stroke="#006F94"
+                      rx="3"
+                    ></rect>
+                    <path
+                      class="tick"
+                      stroke="#6EA340"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-width="4"
+                      d="M4 10l5 5 9-9"
+                    ></path>
+                  </svg>
+                  <p class="checkbox__label">{{ tag.name }}</p>
+                </label>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %} -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div data-ui-tablist class="accordion filter_accordion">
+      <div data-ui-tablist-item class="main_bb">
+        <button data-ui-tablist-tab class="filter_accordion_tab">
+          Виключити фендоми
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <path d="M18 9L12 15L6 9" stroke="white" />
+          </svg>
+        </button>
+        <div
+          data-ui-tablist-tabpanel
+          data-ui-transition-name="collapse"
+          hidden
+        >
+          <div class="accordion-panel">
+            <div class="filter_item fww">
+
+              <label for="all_f" class="tag_lbl">
+                <input
+                  class="tag_btn"
+                  id="all_f"
+                  type="checkbox"
+                  value="all"
+                  name="ex_fandoms" hidden>
+                <p class="tag_ex_p">Без фендомів</p>
+              </label>
+
+            {% for fandom in fandoms %}
+            <label for="{{fandom.id}}f" class="tag_lbl">
+              <input
+                class="tag_btn"
+                id="{{fandom.id}}f"
+                type="checkbox"
+                value="{{fandom.id}}"
+                name="ex_fandoms" hidden>
+              <p class="tag_ex_p">{{ fandom.name }}</p>
+            </label>
+            {% endfor %}
+
+            <!-- {% if fandoms.count > 2 %}
+            <div class="multiselect">
+              <div class="selectBox" onclick="showCheckboxesExF()">
+                <select>
+                  <option>Виберіть фендом</option>
+                </select>
+                <div class="overSelect"></div>
+              </div>
+              <div id="checkboxes_ex_fandom">
+                {% for fandom in fandoms|slice:"2:" %}
+                <label for="myCheckbox{{fandom.id}}f">
+                  <input
+                    type="checkbox"
+                    class="checkbox__input"
+                    id="myCheckbox{{fandom.id}}f"
+                    value="{{fandom.id}}"
+                    name="ex_fandoms"
+                  />
+                  <svg
+                    class="checkbox__icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 22 22"
+                  >
+                    <rect
+                      width="21"
+                      height="21"
+                      x=".5"
+                      y=".5"
+                      fill="#FFF"
+                      stroke="#006F94"
+                      rx="3"
+                    ></rect>
+                    <path
+                      class="tick"
+                      stroke="#6EA340"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-width="4"
+                      d="M4 10l5 5 9-9"
+                    ></path>
+                  </svg>
+                  <p class="checkbox__label">{{ fandom.name }}</p>
+                </label>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %} -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div data-ui-tablist class="accordion filter_accordion">
+      <div data-ui-tablist-item class="main_bb">
+        <button data-ui-tablist-tab class="filter_accordion_tab">
+          Кількість розділів
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <path d="M18 9L12 15L6 9" stroke="white" />
+          </svg>
+        </button>
+        <div
+          data-ui-tablist-tabpanel
+          data-ui-transition-name="collapse"
+          hidden
+        >
+          <div class="accordion-panel">
+            <div class="filter_item filter_inputs">
+              <div class="filter_input">
+                <p>від</p>
+                <input type="number" name="chapters_min"
+                  id="chapters_min" min="0"/>
+              </div>
+              <div class="filter_input">
+                <p>до</p>
+                <input type="number" name="chapters_max"
+                  id="chapters_max" min="0"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <label for="myCheckbox444" class="checkbox">
+    <input
+      class="checkbox__input"
+      type="checkbox"
+      id="myCheckbox444"
+      name="ex_all_fandoms"
+    />
+    <svg
+      class="checkbox__icon"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 22 22"
+    >
+      <rect
+        width="21"
+        height="21"
+        x=".5"
+        y=".5"
+        fill="#FFF"
+        stroke="#006F94"
+        rx="3"
+      ></rect>
+      <path
+        class="tick"
+        stroke="#6EA340"
+        fill="none"
+        stroke-linecap="round"
+        stroke-width="4"
+        d="M4 10l5 5 9-9"
+      ></path>
+    </svg>
+    <p class="checkbox__label">Без фендомів</p>
+  </label>
+  <label for="myCheckbox44" class="checkbox">
+    <input
+      class="checkbox__input"
+      type="checkbox"
+      id="myCheckbox44"
+      name="completed"
+    />
+    <svg
+      class="checkbox__icon"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 22 22"
+    >
+      <rect
+        width="21"
+        height="21"
+        x=".5"
+        y=".5"
+        fill="#FFF"
+        stroke="#006F94"
+        rx="3"
+      ></rect>
+      <path
+        class="tick"
+        stroke="#6EA340"
+        fill="none"
+        stroke-linecap="round"
+        stroke-width="4"
+        d="M4 10l5 5 9-9"
+      ></path>
+    </svg>
+    <p class="checkbox__label">Готові на 100%</p>
+  </label>
+  <!-- <label for="myCheckbox45" class="checkbox">
+    <input
+      class="checkbox__input"
+      type="checkbox"
+      id="myCheckbox45"
+    />
+    <svg
+      class="checkbox__icon"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 22 22"
+    >
+      <rect
+        width="21"
+        height="21"
+        x=".5"
+        y=".5"
+        fill="#FFF"
+        stroke="#006F94"
+        rx="3"
+      ></rect>
+      <path
+        class="tick"
+        stroke="#6EA340"
+        fill="none"
+        stroke-linecap="round"
+        stroke-width="4"
+        d="M4 10l5 5 9-9"
+      ></path>
+    </svg>
+    <p class="checkbox__label">Доступні для скачування</p>
+  </label>
+  <label for="myCheckbox47" class="checkbox">
+    <input
+      class="checkbox__input"
+      type="checkbox"
+      id="myCheckbox47"
+    />
+    <svg
+      class="checkbox__icon"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 22 22"
+    >
+      <rect
+        width="21"
+        height="21"
+        x=".5"
+        y=".5"
+        fill="#FFF"
+        stroke="#006F94"
+        rx="3"
+      ></rect>
+      <path
+        class="tick"
+        stroke="#6EA340"
+        fill="none"
+        stroke-linecap="round"
+        stroke-width="4"
+        d="M4 10l5 5 9-9"
+      ></path>
+    </svg>
+    <p class="checkbox__label">Розпродаж</p>
+  </label> -->
+  <label for="myCheckbox48" class="checkbox">
+    <input
+      class="checkbox__input"
+      type="checkbox"
+      id="myCheckbox48"
+      name="viewed_books"
+      value="viewed_books"
+    />
+    <svg
+      class="checkbox__icon"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 22 22"
+    >
+      <rect
+        width="21"
+        height="21"
+        x=".5"
+        y=".5"
+        fill="#FFF"
+        stroke="#006F94"
+        rx="3"
+      ></rect>
+      <path
+        class="tick"
+        stroke="#6EA340"
+        fill="none"
+        stroke-linecap="round"
+        stroke-width="4"
+        d="M4 10l5 5 9-9"
+      ></path>
+    </svg>
+    <p class="checkbox__label">Тільки непереглянуті</p>
+  </label>
+  <label for="myCheckbox49" class="checkbox">
+    <input
+      class="checkbox__input"
+      type="checkbox"
+      id="myCheckbox49"
+      name="bookmarks"
+    />
+    <svg
+      class="checkbox__icon"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 22 22"
+    >
+      <rect
+        width="21"
+        height="21"
+        x=".5"
+        y=".5"
+        fill="#FFF"
+        stroke="#006F94"
+        rx="3"
+      ></rect>
+      <path
+        class="tick"
+        stroke="#6EA340"
+        fill="none"
+        stroke-linecap="round"
+        stroke-width="4"
+        d="M4 10l5 5 9-9"
+      ></path>
+    </svg>
+    <p class="checkbox__label">Не показувати закладки</p>
+  </label>
+  <label for="myCheckbox50" class="checkbox">
+    <input
+      class="checkbox__input"
+      type="checkbox"
+      id="myCheckbox50"
+      name="translating"
+    />
+    <svg
+      class="checkbox__icon"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 22 22"
+    >
+      <rect
+        width="21"
+        height="21"
+        x=".5"
+        y=".5"
+        fill="#FFF"
+        stroke="#006F94"
+        rx="3"
+      ></rect>
+      <path
+        class="tick"
+        stroke="#6EA340"
+        fill="none"
+        stroke-linecap="round"
+        stroke-width="4"
+        d="M4 10l5 5 9-9"
+      ></path>
+    </svg>
+    <p class="checkbox__label">Тільки онгоінги</p>
+  </label>
+
+  <button type="submit" class="filter_btn">Пошук</button>
+  </form>
+</div>
+<script>
+var expanded = false;
+function showCheckboxes() {
+  var checkboxes = document.getElementsByClassName("tag_btn");
+  var label = document.getElementsByClassName("tag_lbl");
+  if (!expanded) {
+    label.style = "color: white;";
+    expanded = true;
+  } else {
+    label.style.color = "var(--dark, #5e626c);";
+    expanded = false;
+  }
+}
+var expandedtag = false;
+function showCheckboxesT() {
+  var checkboxes = document.getElementById("checkboxes_tag");
+  if (!expandedtag) {
+    checkboxes.style.display = "block";
+    expandedtag = true;
+  } else {
+    checkboxes.style.display = "none";
+    expandedtag = false;
+  }
+}
+var expandedfandom = false;
+function showCheckboxesF() {
+  var checkboxes = document.getElementById("checkboxes_fandom");
+  if (!expandedfandom) {
+    checkboxes.style.display = "block";
+    expandedfandom = true;
+  } else {
+    checkboxes.style.display = "none";
+    expandedfandom = false;
+  }
+}
+var expandedexgenre = false;
+function showCheckboxesExG() {
+  var checkboxes = document.getElementById("checkboxes_ex_genre");
+  if (!expandedexgenre) {
+    checkboxes.style.display = "block";
+    expandedexgenre = true;
+  } else {
+    checkboxes.style.display = "none";
+    expandedexgenre = false;
+  }
+}
+var expandedextag = false;
+function showCheckboxesExT() {
+  var checkboxes = document.getElementById("checkboxes_ex_tag");
+  if (!expandedextag) {
+    checkboxes.style.display = "block";
+    expandedextag = true;
+  } else {
+    checkboxes.style.display = "none";
+    expandedextag = false;
+  }
+}
+var expandedexfandom = false;
+function showCheckboxesExF() {
+  var checkboxes = document.getElementById("checkboxes_ex_fandom");
+  if (!expandedexfandom) {
+    checkboxes.style.display = "block";
+    expandedexfandom = true;
+  } else {
+    checkboxes.style.display = "none";
+    expandedexfandom = false;
+  }
+}
+
+// function mobFilter() {
+//   var expandedMob = false;
+//   var mobfil = document.getElementById("filter");
+//   console.log(mobfil);
+//   if (!expandedMob) {
+//     mobfil.style.display = "block";
+//     expandedMob = true;
+//   } else {
+//     mobfil.style.display = "none";
+//     expandedMob = false;
+//   }
+// }
+</script>
