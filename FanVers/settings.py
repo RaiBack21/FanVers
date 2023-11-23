@@ -19,13 +19,6 @@ from django.urls import reverse_lazy
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'catalog', 'static'),
-    os.path.join(BASE_DIR, 'main', 'static'),
-    os.path.join(BASE_DIR, 'advertisement', 'static'),
-]
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 AUTH_PROFILE_MODULE = 'users.Profile'
 # Application definition
@@ -170,6 +163,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -249,6 +246,7 @@ SOCIALACCOUNT_PROVIDERS = {
 INTERNAL_IPS = [
     #...
     '127.0.0.1',
+    # '75.119.145.245',
 ]
 
 
