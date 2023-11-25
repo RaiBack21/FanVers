@@ -1,11 +1,9 @@
 local_settings.py
 prod_settings.py
 
-db.sqlite.3
-
-**/migrations/**
-!**/migrations
-!**/migrations/__init__.py
-
-media/*
-!*media
+*.pyc
+__pycache__
+venv
+db.sqlite3
+/static
+.DS_Store

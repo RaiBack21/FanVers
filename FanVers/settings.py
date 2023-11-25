@@ -163,9 +163,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT = True
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+# SECURE_SSL_REDIRECT = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -246,7 +246,6 @@ SOCIALACCOUNT_PROVIDERS = {
 INTERNAL_IPS = [
     #...
     '127.0.0.1',
-    # '75.119.145.245',
 ]
 
 
