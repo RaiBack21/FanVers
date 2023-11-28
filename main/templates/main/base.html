@@ -1,4 +1,6 @@
 {% load static %}
+{% load socialaccount %}
+{% providers_media_js %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,8 +41,11 @@
 <body>
   <div class="page_wrapper main_page">
     <nav>
-
-      <div class="nav_wrapper">
+      {% if user.is_authenticated %}
+      <div class="nav_wrapper logined">
+      {% else %}
+      <div class="nav_wrapper not_logined">
+      {% endif %}
         <form action="{% url 'catalog:search_results' %}" method="get">
           <div class="search_wrapper">
             <input type="text" placeholder="Пошук по сайту" name="q" />
@@ -54,6 +59,7 @@
             <img src="{% static 'main/images/assets/main-logo.png' %}"  alt="FanVers" width="150" height="150"/>
           </div>
         </a>
+        {% if user.is_authenticated %}
         <div class="nav_profile desk_login">
           <div class="nav_profile_avatar" onclick="toggleNavMenu()">
             <img src="{% static 'main/images/assets/images/profile.png' %}" alt="" />
@@ -147,6 +153,7 @@
             </a>
           </div>
         </div>
+        {% else %}
         <div class="nav_login_actions desk_login">
           <button class="about_book_action nav_login nav_auth_btn" id="signupbtn" onclick="handleAuth()">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -170,6 +177,7 @@
             <p>Увійти</p>
           </button>
         </div>
+        {% endif %}
         <div class="switch_toggler ">
           <div style="margin-top: 10px;">
             <span class="tristate tristate-switcher">
@@ -196,6 +204,7 @@
             </path>
           </svg>
         </div>
+
         <div class="nav_mob_menu">
           <div class="mob_menu_exit" onclick="toggleMenu()">
             <svg width="800" height="800" viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -393,7 +402,6 @@
       </div>
     </nav>
 
-    <!-- <div class="main_content_wrapper"> -->
 
       {% block content %}
 
@@ -740,7 +748,7 @@ $(document).ready(function() {
           </svg>
           <p>Facebook</p>
         </button>
-        <button class="about_book_action">
+        <a href="{% provider_login_url 'google' %}?next=/" class="about_book_action">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -773,7 +781,7 @@ $(document).ready(function() {
             </defs>
           </svg>
           <p>Google</p>
-        </button>
+        </a>
       </div>
     </form>
     </div>

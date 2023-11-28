@@ -19,6 +19,7 @@ from django.urls import reverse_lazy
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# SECURITY WARNING: keep the secret key used in production secret!
 
 AUTH_PROFILE_MODULE = 'users.Profile'
 # Application definition
@@ -37,7 +38,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.apple',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.google',
-    #'django.contrib.sites',
+    'django.contrib.sites',
     'debug_toolbar',
     'django_celery_beat',
     'dal',
@@ -141,6 +142,7 @@ AUTHENTICATION_BACKENDS = [
 
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend'
 ]
 
 
@@ -184,6 +186,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
 
 
 # Media files
@@ -235,15 +238,15 @@ ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'APP': {
-            'client_id': 'YOUR_CLIENT_ID',
-            'secret': 'YOUR_SECRET_KEY',
-            'key': ''
-        }
-    }
-}
+# SOCIALACCOUNT_PROVIDERS = {
+#     'google': {
+#         'APP': {
+#             'client_id': 'YOUR_CLIENT_ID',
+#             'secret': 'YOUR_SECRET_KEY',
+#             'key': ''
+#         }
+#     }
+# }
 INTERNAL_IPS = [
     #...
     '127.0.0.1',

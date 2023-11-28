@@ -40,7 +40,11 @@
                     <p>{{ book.last_updated|date:"d.m.Y" }}</p>
                   </div>
                   <div>
-                    <p>Перегляди</p>
+                    <p>Переглядів за день</p>
+                    <p>{{ book.today_views }}</p>
+                  </div>
+                  <div>
+                    <p>Загальна кількість переглядів</p>
                     <p>{{ book.viewed_by.count }}</p>
                   </div>
                   <div>

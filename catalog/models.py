@@ -112,7 +112,8 @@ class Chapter(models.Model):
     price = models.DecimalField(max_digits=7, decimal_places=2, default=0.00)  # Цена главы
     purchased_by = models.ManyToManyField(User, blank=True, related_name="purchased_chapters")
     content_length = models.PositiveIntegerField(default=0)
-    chapter_views = models.IntegerField(default=0)
+    chapter_views = models.ManyToManyField(User, blank=True, through='ViewedChapters',
+                                       related_name="viewed_chapters")
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -255,6 +256,11 @@ def update_trending_score():
 
 class ViewedBooks(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    revision_date = models.DateField(verbose_name='Дата перегляду', auto_now_add=True)
+
+class ViewedChapters(models.Model):
+    chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     revision_date = models.DateField(verbose_name='Дата перегляду', auto_now_add=True)
 

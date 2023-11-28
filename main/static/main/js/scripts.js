@@ -182,21 +182,21 @@ $(document).ready(function () {
 // Logout
 const nav_wrapper = document.querySelector(".nav_wrapper");
 function handleLoginBtn() {
-  nav_wrapper.classList.remove("not_logined");
+  //nav_wrapper.classList.remove("not_logined");
   localStorage.setItem("logined", true);
   window.location.reload();
 }
 function handleLogout() {
-  nav_wrapper.classList.add("not_logined");
+  //nav_wrapper.classList.add("not_logined");
   localStorage.setItem("logined", false);
 }
 if (localStorage.getItem("logined") == "false") {
-  nav_wrapper.classList.add("not_logined");
-  nav_wrapper.classList.remove("logined_nav");
+  //nav_wrapper.classList.add("not_logined");
+  //nav_wrapper.classList.remove("logined_nav");
 }
 if (localStorage.getItem("logined") != "false") {
-  nav_wrapper.classList.add("logined_nav");
-  nav_wrapper.classList.remove("not_logined");
+  //nav_wrapper.classList.add("logined_nav");
+  //nav_wrapper.classList.remove("not_logined");
 }
 
 // Login

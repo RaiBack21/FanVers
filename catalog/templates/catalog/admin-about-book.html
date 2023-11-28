@@ -408,7 +408,7 @@
                   </a>
                 </div>
                 <div class="parts_table_date">
-                    <p>{{ chapter.chapter_views }}</p>
+                    <p>{{ chapter.chapter_views.count }}</p>
                   </div>
                 <div class="parts_table_date">
                     <p>{{ chapter.purchased_by.count }}</p>
@@ -469,7 +469,7 @@
               </div>
               <div class="comment_block_item_content" id="comment-{{ comment.id }}">
                 <div class="comment_autor">
-                  <p>{{ comment.owner.user.username }}</p>
+                  <p>{{ comment.owner.username }}</p>
                   <span>{{ comment.published|timesince }}</span>
                 </div>
                 <div class="comment_text">
@@ -517,9 +517,9 @@
                   </button>
                 </div>
               </div>
-              <a href="#comment-form" class="reply_button" onclick="replyComment('{{comment.owner.user.username}}', '{{comment.id}}')">Відповісти</a>
+              <a href="#comment-form" class="reply_button" onclick="replyComment('{{comment.owner.username}}', '{{comment.id}}')">Відповісти</a>
               <div class="delete-button">
-                {% if user == comment.owner.user %}
+                {% if user == comment.owner %}
                   <button class="delete-button" id="delete-button{{ comment.id }}"data-url="{% url 'catalog:delete_comment' comment.id %}" data-cid="{{ comment.id }}">Видалити коментар</button>
                 {% endif %}
               </div>
@@ -649,7 +649,7 @@
               </div>
               <div class="comment_block_item_content" id="comment-{{ com.id }}">
                 <div class="comment_autor">
-                  <p>{{ com.owner.user.username }}</p>
+                  <p>{{ com.owner.username }}</p>
                   <span>{{ com.published|timesince }}</span>
                 </div>
                 <div class="comment_text">
@@ -699,7 +699,7 @@
           </div>
           <!-- <a href="#comment-form" class="reply_button" onclick="replyComment('{{com.owner.user.username}}', '{{com.id}}')">Відповісти</a> -->
           <div class="delete-button">
-            {% if user == com.owner.user %}
+            {% if user == com.owner %}
               <button class="delete-button" id="delete-button{{ com.id }}"data-url="{% url 'catalog:delete_comment' com.id %}" data-cid="{{ com.id }}">Видалити коментар</button>
             {% endif %}
           </div>

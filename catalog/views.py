@@ -2,7 +2,7 @@ from django.urls import reverse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.decorators import login_required
-from .models import Book, Tag, Fandom, Country, Genres, Chapter, Comment, Like, Dislike, Rating, Quality, Income
+from .models import Book, Tag, Fandom, Country, Genres, Chapter, Comment, Like, Dislike, Rating, Quality, Income, ViewedBooks, ViewedChapters
 from .forms import BookForm, ChapterForm, CommentForm
 from .forms import EditBookForm
 from Advertisement.models import Advertisement
@@ -92,20 +92,27 @@ class BookBase(DetailView):
     def get(self, request, slug):
         book = get_object_or_404(Book, slug=slug)
 
+        book_views = ViewedBooks.objects.update_or_create(book=book, user=request.user)
+
         today = timezone.now().date()
         comment_form = CommentForm()
 
         translator_books = Book.objects.filter(user=book.user)[:8]
+
         chapters = Chapter.objects.filter(book=book.id).order_by('created_at')
+
         comments = Comment.objects.filter(
             content_type=ContentType.objects.get_for_model(book), object_id=book.id,
         parent__isnull=True).annotate(likes_count=Count('likes'
         ), dislikes_count=Count('dislikes')).order_by('-published')
+
         comments_reply = Comment.objects.filter(
             content_type=ContentType.objects.get_for_model(book), object_id=book.id,
         parent__isnull=False).annotate(likes_count=Count('likes'
         ), dislikes_count=Count('dislikes')).order_by('-published')
+
         us = request.user
+
         context = {
         'slug': book.slug, 'book': book, 'translator_books': translator_books,
         'chapters':chapters, 'comments': comments,
@@ -127,14 +134,14 @@ class BookBase(DetailView):
                 comment.parent_id = int(request.POST.get("parent"))
             comment.content_type = ContentType.objects.get_for_model(self.object)
             comment.object_id = self.object.id
-            comment.owner = request.user.profile
+            comment.owner = request.user
             likes_count = 0
             dislikes_count = 0
             comment.save()
             if request.headers.get('x-requested-with') == 'XMLHttpRequest':
                 return JsonResponse(
                     {'text': comment.text, 'id': comment.id,
-                     'owner': comment.owner.user.username,
+                     'owner': comment.owner.username,
                      'likes_count': likes_count,
                      'dislikes_count': dislikes_count,
                      'parentid': comment.parent_id
@@ -246,7 +253,7 @@ class DeleteCommentView(View):
         comment = get_object_or_404(Comment, id=comment_id)
 
         # Проверяем, что пользователь - автор комментария
-        if comment.owner.user != request.user:
+        if comment.owner != request.user:
             return HttpResponseForbidden("You are not allowed to delete this comment")
 
         comment.delete()
@@ -422,10 +429,10 @@ class ChapterDetail(DetailView):
         book = get_object_or_404(Book, slug=book_slug)
         chapter = get_object_or_404(Chapter, slug=chapter_slug)
 
+        chapter_views = ViewedChapters.objects.update_or_create(chapter=chapter, user=request.user)
+
         today = timezone.now().date()
         comment_form = CommentForm()
-
-
 
         book_chapters = Chapter.objects.filter(
             book_id=book.id).select_related("book").order_by('created_at')
@@ -449,7 +456,7 @@ class ChapterDetail(DetailView):
 
         context = {
         'book_slug': book.slug, 'chapter_slug': chapter.slug, 'book': book,
-        'chapter':chapter, 'comments': comments,
+        'chapter': chapter, 'comments': comments,
         'comments_reply': comments_reply, 'today': today,
         'comment_form': comment_form, 'us': us, 'book_chapters': book_chapters,
         'prev_chap': prev_chap, 'next_chap': next_chap
@@ -469,14 +476,14 @@ class ChapterDetail(DetailView):
                 comment.parent_id = int(request.POST.get("parent"))
             comment.content_type = ContentType.objects.get_for_model(self.object)
             comment.object_id = self.object.id
-            comment.owner = request.user.profile
+            comment.owner = request.user
             likes_count = 0
             dislikes_count = 0
             comment.save()
             if request.headers.get('x-requested-with') == 'XMLHttpRequest':
                 return JsonResponse(
                     {'text': comment.text, 'id': comment.id,
-                     'owner': comment.owner.user.username,
+                     'owner': comment.owner.username,
                      'likes_count': likes_count,
                      'dislikes_count': dislikes_count,
                      'parentid': comment.parent_id
@@ -496,9 +503,9 @@ class ChapterDetail(DetailView):
 
         if book_slug is not None and chapter_slug is not None:
             chapter = get_object_or_404(Chapter, slug=chapter_slug)
-            chapter.chapter_views += 1
-            chapter.save()
+            # chapter.chapter_views += 1
             if chapter_slug == 'edit':
+                chapter.save()
                 # Обработка для редактирования главы
                 # Возможно, перенаправление или что-то другое
                 return HttpResponseRedirect(
@@ -1208,7 +1215,10 @@ class OwnTranslationsListView(ListView):
         books = (Book.objects.
             filter(user_id=user.id).
             select_related('user').
-            annotate(total_income=Sum("income__amount"))).annotate(today_book_income=Sum("income__amount", filter=Q(income__datetime__date=date.today())))
+            annotate(total_income=Sum("income__amount")).annotate(today_book_income=Sum("income__amount", filter=Q(income__datetime__date=date.today()))).
+            annotate(today_views=Count("viewedbooks", filter=Q(viewedbooks__revision_date__gte=date.today())))
+        )
+
         total_chars = sum(ch.content_length for ch in Chapter.objects.filter(book__user=self.request.user))
         total_pages =  total_chars//1500
         if total_chars < 5000:
